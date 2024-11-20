@@ -1,8 +1,4 @@
 package org.example.bankapp.service;
-
-
-import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 
 public interface BankService{
