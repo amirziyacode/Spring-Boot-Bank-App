@@ -20,7 +20,7 @@ public class BankServiceImpl implements BankService {
                 .accountNumber(userId)
                 .username("AmirZiya")
                 .password(UUID.randomUUID().toString())
-                .balance(1000L)
+                .amount(1000)
                 .build();
 
         userMap.put(userId,user);
@@ -29,22 +29,24 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Long viewBalance(UUID accountId) {
-        return userMap.get(accountId).getBalance();
+    public Double viewBalance(UUID accountId) {
+        return userMap.get(accountId).getAmount();
     }
 
     @Override
-    public void deposit(UUID accountId, Long amount) {
+    public void deposit(UUID accountId, Double amount) {
 
     }
 
     @Override
-    public void withdraw(UUID accountId, Long amount) {
-        userMap.get(accountId).setBalance(userMap.get(accountId).getBalance() - amount);
+    public User withdraw(UUID accountId, Double amount) {
+        if(amount > 0)
+            userMap.get(accountId).setAmount(userMap.get(accountId).getAmount() - amount);
+        return userMap.get(accountId);
     }
 
     @Override
-    public void transfer(UUID from, UUID to, Long amount) {
+    public void transfer(UUID from, UUID to, Double amount) {
 
     }
 }
