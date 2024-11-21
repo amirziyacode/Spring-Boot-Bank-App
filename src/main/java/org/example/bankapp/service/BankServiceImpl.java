@@ -24,6 +24,8 @@ public class BankServiceImpl implements BankService {
                 .build();
 
         userMap.put(userId,user);
+
+        System.out.printf(userId + " created");
     }
 
     @Override
