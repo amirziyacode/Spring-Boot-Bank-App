@@ -12,10 +12,10 @@ import java.util.UUID;
 public class BankServiceImpl implements BankService {
 
     private final Map<UUID, User> userMap;
-    private final UUID userId  = UUID.randomUUID();
 
     public BankServiceImpl() {
         userMap = new HashMap<>();
+        UUID userId = UUID.randomUUID();
         val user = User.builder()
                 .accountNumber(userId)
                 .username("AmirZiya")
@@ -40,7 +40,7 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void withdraw(UUID accountId, Long amount) {
-
+        userMap.get(accountId).setBalance(userMap.get(accountId).getBalance() - amount);
     }
 
     @Override
