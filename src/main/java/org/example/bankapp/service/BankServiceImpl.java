@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,8 +30,8 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Double viewBalance(UUID accountId) {
-        return userMap.get(accountId).getAmount();
+    public Optional<Double> viewBalance(UUID accountId) {
+        return Optional.ofNullable(userMap.get(accountId)).map(User::getAmount);
     }
 
     @Override
