@@ -35,7 +35,8 @@ public class BankServiceImpl implements BankService {
         userMap.put(userId,user);
         userMap.put(userId1,user1);
 
-        System.out.printf(userId + " created");
+        System.out.println(userId + " created");
+        System.out.println(userId1 + " created");
     }
 
     @Override
@@ -58,10 +59,11 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void transfer(UUID from, UUID to, Double amount) {
+    public User transfer(UUID from, UUID to, Double amount) {
         User userFrom = userMap.get(from);
         User userTo = userMap.get(to);
         userFrom.setAmount(userFrom.getAmount() - amount);
         userTo.setAmount(userTo.getAmount() + amount);
+        return userFrom;
     }
 }

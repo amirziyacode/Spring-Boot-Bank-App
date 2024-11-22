@@ -32,4 +32,9 @@ public class BankController {
         return  ResponseEntity.ok().body(bankService.deposit(bankId,user.getAmount()));
     }
 
+    @PostMapping("/bank/transfer/{bankId}")
+    public ResponseEntity<User> transfer(@PathVariable("bankId") UUID bankId, @RequestBody User user) {
+        return  ResponseEntity.ok().body(bankService.transfer(bankId,user.getAccountNumber(),user.getAmount()));
+    }
+
 }
