@@ -18,7 +18,7 @@ public class BankServiceImpl implements BankService {
         userMap = new HashMap<>();
         UUID userId = UUID.randomUUID();
         UUID userId1 = UUID.randomUUID();
-        val user = User.builder()
+        User user = User.builder()
                 .accountNumber(userId)
                 .username("AmirZiya")
                 .password(UUID.randomUUID().toString())
