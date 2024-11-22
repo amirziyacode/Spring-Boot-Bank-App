@@ -1,5 +1,6 @@
 package org.example.bankapp.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.bankapp.controller.BankController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 import java.util.UUID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -27,6 +30,8 @@ class BankServiceImplTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
     @Captor
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
@@ -53,8 +58,14 @@ class BankServiceImplTest {
     }
 
     @Test
-    void withdraw() {
-
+    void withdraw() throws Exception {
+        given(bankService.withdraw(any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
+        mockMvc.perform(post("/bank/deposit/{bankId}",bankServiceImpl.user.getAccountNumber())
+                        .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
+                        .content("{\"amount\":\"100.0\"}")
+                .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
