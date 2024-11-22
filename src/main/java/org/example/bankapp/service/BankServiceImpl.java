@@ -17,14 +17,23 @@ public class BankServiceImpl implements BankService {
     public BankServiceImpl() {
         userMap = new HashMap<>();
         UUID userId = UUID.randomUUID();
+        UUID userId1 = UUID.randomUUID();
         val user = User.builder()
                 .accountNumber(userId)
                 .username("AmirZiya")
                 .password(UUID.randomUUID().toString())
                 .amount(1000)
                 .build();
+        val user1 = User.builder()
+                .accountNumber(userId1)
+                .username("Ali")
+                .password(UUID.randomUUID().toString())
+                .amount(1200)
+                .build();
+
 
         userMap.put(userId,user);
+        userMap.put(userId1,user1);
 
         System.out.printf(userId + " created");
     }
@@ -50,6 +59,9 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void transfer(UUID from, UUID to, Double amount) {
-
+        User userFrom = userMap.get(from);
+        User userTo = userMap.get(to);
+        userFrom.setAmount(userFrom.getAmount() - amount);
+        userTo.setAmount(userTo.getAmount() + amount);
     }
 }
