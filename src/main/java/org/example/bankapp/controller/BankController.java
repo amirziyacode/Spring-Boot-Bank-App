@@ -27,4 +27,9 @@ public class BankController {
         return  ResponseEntity.ok().body(bankService.withdraw(bankId,user.getAmount()));
     }
 
+    @PostMapping("/bank/deposit/{bankId}")
+    public ResponseEntity<User> deposit(@PathVariable("bankId") UUID bankId, @RequestBody User user) {
+        return  ResponseEntity.ok().body(bankService.deposit(bankId,user.getAmount()));
+    }
+
 }

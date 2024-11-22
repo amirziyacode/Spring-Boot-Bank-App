@@ -35,8 +35,10 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void deposit(UUID accountId, Double amount) {
-
+    public User deposit(UUID accountId, Double amount) {
+        if(amount > 0)
+            userMap.get(accountId).setAmount(userMap.get(accountId).getAmount() + amount);
+        return userMap.get(accountId);
     }
 
     @Override
