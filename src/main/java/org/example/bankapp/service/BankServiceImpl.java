@@ -12,13 +12,15 @@ import java.util.UUID;
 @Service
 public class BankServiceImpl implements BankService {
 
-    private final Map<UUID, User> userMap;
+    public final Map<UUID, User> userMap;
+
+    public User user;
 
     public BankServiceImpl() {
         userMap = new HashMap<>();
         UUID userId = UUID.randomUUID();
         UUID userId1 = UUID.randomUUID();
-        User user = User.builder()
+        user = User.builder()
                 .accountNumber(userId)
                 .username("AmirZiya")
                 .password(UUID.randomUUID().toString())
