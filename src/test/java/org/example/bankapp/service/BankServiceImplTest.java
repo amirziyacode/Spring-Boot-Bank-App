@@ -35,6 +35,7 @@ class BankServiceImplTest {
     @Captor
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
+    UUID bankId;
 
     @Autowired(required = false)
     BankServiceImpl bankServiceImpl;
@@ -42,12 +43,13 @@ class BankServiceImplTest {
     @BeforeEach
     void setUp() {
         bankServiceImpl = new BankServiceImpl();
+        bankId = bankServiceImpl.user.getAccountNumber();
     }
 
     @Test
     void viewBalance()throws Exception {
         when(bankService.viewBalance(bankServiceImpl.user.getAccountNumber())).thenReturn(Optional.of(bankServiceImpl.user.getAmount()));
-        mockMvc.perform(get("/bank/balance/{bankId}",bankServiceImpl.user.getAccountNumber())
+        mockMvc.perform(get("/bank/balance/{bankId}",bankId)
                         .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
         verify(bankService).viewBalance(uuidArgumentCaptor.capture());
@@ -56,7 +58,7 @@ class BankServiceImplTest {
     @Test
     void deposit()  throws Exception {
         given(bankService.deposit(any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
-        mockMvc.perform(post("/bank/deposit/{bankId}",bankServiceImpl.user.getAccountNumber())
+        mockMvc.perform(post("/bank/deposit/{bankId}",bankId)
                 .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
                 .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +69,7 @@ class BankServiceImplTest {
     @Test
     void withdraw() throws Exception {
         given(bankService.withdraw(any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
-        mockMvc.perform(post("/bank/deposit/{bankId}",bankServiceImpl.user.getAccountNumber())
+        mockMvc.perform(post("/bank/deposit/{bankId}",bankId)
                         .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
                         .content("{\"amount\":\"100.0\"}")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -76,6 +78,14 @@ class BankServiceImplTest {
     }
 
     @Test
-    void transfer() {
+    void transfer() throws Exception {
+        given(bankService.withdraw(any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
+        mockMvc.perform(post("/bank/transfer/{bankId}",bankId)
+                .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
+                .content("{" +
+                        "\"accountNumber\":\""+bankId+"\""+","+
+                        "\"amount\":\"100.0\"" +
+                        "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
