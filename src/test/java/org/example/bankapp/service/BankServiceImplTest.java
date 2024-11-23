@@ -88,4 +88,9 @@ class BankServiceImplTest {
                         "}").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void not_found_balance() throws Exception {
+        given(bankService.viewBalance(any(UUID.class))).willThrow(RuntimeException.class);
+    }
 }
