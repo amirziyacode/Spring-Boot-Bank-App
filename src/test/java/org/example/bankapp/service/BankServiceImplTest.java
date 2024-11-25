@@ -1,7 +1,6 @@
 package org.example.bankapp.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.example.bankapp.controller.BankController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
