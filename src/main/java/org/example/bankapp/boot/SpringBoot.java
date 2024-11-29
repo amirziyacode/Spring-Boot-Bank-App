@@ -20,7 +20,7 @@ public class SpringBoot implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
-//        loadUser();
+        loadUser();
     }
     private void loadUser(){
        User user = User.builder()
