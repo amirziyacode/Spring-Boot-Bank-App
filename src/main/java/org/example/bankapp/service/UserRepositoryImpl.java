@@ -16,7 +16,7 @@ public class UserRepositoryImpl implements BankService {
     private final UserRepository userRepository;
     @Override
     public Optional<Double> viewBalance(UUID accountId) {
-        return Optional.empty();
+        return Optional.of(userRepository.findByAccountNumber(accountId));
     }
 
     @Override
