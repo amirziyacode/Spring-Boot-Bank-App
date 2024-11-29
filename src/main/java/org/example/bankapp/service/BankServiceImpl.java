@@ -1,5 +1,6 @@
 package org.example.bankapp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.example.bankapp.model.User;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class BankServiceImpl implements BankService {
 
     public final Map<UUID, User> userMap;

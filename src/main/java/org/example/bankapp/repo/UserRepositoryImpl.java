@@ -1,8 +1,8 @@
-package org.example.bankapp.service;
+package org.example.bankapp.repo;
 
 import lombok.RequiredArgsConstructor;
 import org.example.bankapp.model.User;
-import org.example.bankapp.repo.UserRepository;
+import org.example.bankapp.service.BankService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,8 @@ public class UserRepositoryImpl implements BankService {
     private final UserRepository userRepository;
     @Override
     public Optional<Double> viewBalance(UUID accountId) {
-        return Optional.of(userRepository.findByAccountNumber(accountId));
+//        return Optional.of(userRepository.findByAccountNumber(accountId));
+        return null;
     }
 
     @Override
