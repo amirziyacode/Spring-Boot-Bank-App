@@ -1,23 +1,24 @@
-package org.example.bankapp.repo;
+package org.example.bankapp.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.bankapp.model.User;
-import org.example.bankapp.service.BankService;
+import org.example.bankapp.repo.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Primary
 @Service
-@RequiredArgsConstructor
-public class UserRepositoryImpl implements BankService {
-    private final UserRepository userRepository;
+@Primary
+public class BankServiceImplJPA implements BankService {
+
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public Optional<Double> viewBalance(UUID accountId) {
-//        return Optional.of(userRepository.findByAccountNumber(accountId));
-        return null;
+        return Optional.empty();
     }
 
     @Override

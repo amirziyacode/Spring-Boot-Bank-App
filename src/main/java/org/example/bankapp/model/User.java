@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "User")
+@Entity(name = "BankUser")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
