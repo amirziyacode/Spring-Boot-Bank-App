@@ -1,5 +1,6 @@
 package org.example.bankapp.security;
 
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.UserRepository;
@@ -9,10 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@NoArgsConstructor
+@AllArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
-
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);

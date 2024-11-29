@@ -6,6 +6,7 @@ import org.example.bankapp.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -13,6 +14,8 @@ import java.util.UUID;
 @Component
 @SpringBootApplication
 public class SpringBoot implements CommandLineRunner {
+
+    private  final BCryptPasswordEncoder bCryptPasswordEncoder  = new BCryptPasswordEncoder();
 
     @Autowired
     UserRepository userRepository;
@@ -23,10 +26,12 @@ public class SpringBoot implements CommandLineRunner {
         loadUser();
     }
     private void loadUser(){
+        String password = "Hello World";
+
        User user = User.builder()
                 .accountNumber(UUID.randomUUID())
                 .username("AmirZiya")
-                .password(UUID.randomUUID().toString())
+                .password(bCryptPasswordEncoder.encode(password))
                 .amount(1000000)
                 .build();
 
