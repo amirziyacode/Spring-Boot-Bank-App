@@ -30,7 +30,7 @@ public class SpringBoot implements CommandLineRunner {
 
        User user = User.builder()
                 .accountNumber(UUID.randomUUID())
-                .username("AmirZiya")
+                .username("Admin")
                 .password(bCryptPasswordEncoder.encode(password))
                 .amount(1000000)
                 .build();
