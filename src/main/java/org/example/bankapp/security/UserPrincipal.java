@@ -8,11 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class UserPrincipal implements UserDetails {
-    private User user;
-    public UserPrincipal(User user) {
-        this.user = user;
-    }
-
+    private final User user;
+    public UserPrincipal(User user) {this.user = user;}
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("USER"));

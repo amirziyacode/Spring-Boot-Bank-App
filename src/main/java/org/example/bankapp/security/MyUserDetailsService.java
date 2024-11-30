@@ -1,7 +1,6 @@
 package org.example.bankapp.security;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
