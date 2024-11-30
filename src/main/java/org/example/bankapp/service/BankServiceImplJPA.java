@@ -18,7 +18,7 @@ public class BankServiceImplJPA implements BankService {
 
     @Override
     public Optional<Double> viewBalance(UUID accountId) {
-        return Optional.empty();
+        return Optional.of(userRepository.findByAccountNumber(accountId).getAmount());
     }
 
     @Override
