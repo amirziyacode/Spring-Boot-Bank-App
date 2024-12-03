@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -23,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(BankController.class)
+@WebMvcTest(value = BankController.class,excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 class BankServiceImplTest {
 
     @MockBean
@@ -51,7 +52,7 @@ class BankServiceImplTest {
     @Test
     void viewBalance()throws Exception {
         when(bankService.viewBalance(bankServiceImpl.user.getAccountNumber())).thenReturn(Optional.of(bankServiceImpl.user.getAmount()));
-        mockMvc.perform(get("/bank/balance/{bankId}",bankId).with(httpBasic("Admin", "1234"))
+        mockMvc.perform(get("/bank/balance/{bankId}",bankId)
                         .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
         verify(bankService).viewBalance(uuidArgumentCaptor.capture());
@@ -61,7 +62,7 @@ class BankServiceImplTest {
     void deposit()  throws Exception {
         bankServiceImpl.deposit(bankServiceImpl.user.getAccountNumber(), 100.0);
         given(bankService.deposit(any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
-        mockMvc.perform(post("/bank/deposit/{bankId}",bankId).with(httpBasic("Admin", "1234"))
+        mockMvc.perform(post("/bank/deposit/{bankId}",bankId)
                 .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
                 .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)

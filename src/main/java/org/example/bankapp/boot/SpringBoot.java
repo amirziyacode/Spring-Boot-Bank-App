@@ -23,7 +23,9 @@ public class SpringBoot implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
-        loadUser();
+        if(userRepository.count() == 0) {
+            loadUser();
+        }
     }
     private void loadUser(){
        User user = User.builder()
