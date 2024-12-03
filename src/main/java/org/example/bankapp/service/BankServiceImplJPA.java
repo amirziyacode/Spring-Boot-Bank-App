@@ -30,11 +30,17 @@ public class BankServiceImplJPA implements BankService {
 
     @Override
     public User withdraw(UUID accountId, Double amount) {
-        return null;
+        User user = userRepository.findByAccountNumber(accountId);
+        user.setAmount(user.getAmount() - amount);
+        return userRepository.save(user);
     }
 
     @Override
     public User transfer(UUID from, UUID to, Double amount) {
-        return null;
+        User fromUser = userRepository.findByAccountNumber(from);
+        fromUser.setAmount(fromUser.getAmount() - amount);
+        User toUser = userRepository.findByAccountNumber(to);
+        toUser.setAmount(toUser.getAmount() + amount);
+        return fromUser;
     }
 }
