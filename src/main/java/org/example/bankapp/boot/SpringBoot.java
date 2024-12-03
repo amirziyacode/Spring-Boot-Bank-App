@@ -26,12 +26,10 @@ public class SpringBoot implements CommandLineRunner {
         loadUser();
     }
     private void loadUser(){
-        String password = "Hello World";
-
        User user = User.builder()
                 .accountNumber(UUID.randomUUID())
                 .username("Admin")
-                .password(bCryptPasswordEncoder.encode(password))
+                .password(bCryptPasswordEncoder.encode("1234"))
                 .amount(1000000)
                 .build();
 

@@ -24,4 +24,9 @@ public class UserServiceImpl implements UserService {
         user.setAccountNumber(UUID.randomUUID());
         return userRepository.save(user);
     }
+
+    @Override
+    public User findById(Integer id) {
+        return userRepository.findById(id).orElse(null);
+    }
 }
