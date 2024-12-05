@@ -34,7 +34,14 @@ public class SpringBoot implements CommandLineRunner {
                 .password(bCryptPasswordEncoder.encode("1234"))
                 .amount(1000000)
                 .build();
+        User user1 = User.builder()
+                .accountNumber(UUID.randomUUID())
+                .username("Amir")
+                .password(bCryptPasswordEncoder.encode("Java"))
+                .amount(500.0)
+                .build();
 
        userRepository.save(user);
+       userRepository.save(user1);
     }
 }

@@ -16,6 +16,6 @@ class SpringBootApp {
 
     @Test
     void user_count() {
-        Assertions.assertThat(userRepository.count()).isEqualTo(1);
+        Assertions.assertThat(userRepository.count()).isEqualTo(2);
     }
 }

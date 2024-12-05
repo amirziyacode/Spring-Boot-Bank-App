@@ -46,10 +46,10 @@ class BankControllerIT {
 
     @Test
     void check_view_Balance(){
-        ResponseEntity<Optional<Double>> balance = bankController.getBalance(user.getAccountNumber());
-        assertThat(balance.getBody()).isPresent();
-        assertThat(balance.getBody().get()).isEqualTo(1000000.0);
-        assertThat(balance.getStatusCode()).isEqualTo(HttpStatus.OK);
+        ResponseEntity<Optional<Double>> balanceJson = bankController.getBalance(user.getAccountNumber());
+        assertThat(balanceJson.getBody()).isPresent();
+        assertThat(balanceJson.getBody().get()).isEqualTo(1000000.0);
+        assertThat(balanceJson.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -57,10 +57,10 @@ class BankControllerIT {
     @Transactional
     void check_withdrawal_Account_Balance(){
         User userTest = User.builder().amount(100000.0).build();
-        ResponseEntity<User> withdrawal = bankController.withdrawal(user.getAccountNumber(),userTest);
-        assertThat(withdrawal.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(withdrawal.getBody()).isEqualTo(user);
-        assertThat(Objects.requireNonNull(withdrawal.getBody()).getAmount()).isEqualTo(900000.0);
+        ResponseEntity<User> withdrawalJson = bankController.withdrawal(user.getAccountNumber(),userTest);
+        assertThat(withdrawalJson.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(withdrawalJson.getBody()).isEqualTo(user);
+        assertThat(Objects.requireNonNull(withdrawalJson.getBody()).getAmount()).isEqualTo(900000.0);
     }
 
     @Test
@@ -68,9 +68,22 @@ class BankControllerIT {
     @Rollback
     void check_deposit_Account_Balance(){
         User userTest = User.builder().amount(100000.0).build();
-        ResponseEntity<User> deposit = bankController.deposit(user.getAccountNumber(),userTest);
-        assertThat(deposit.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(deposit.getBody()).isEqualTo(user);
-        assertThat(Objects.requireNonNull(deposit.getBody()).getAmount()).isEqualTo(1100000.0);
+        ResponseEntity<User> depositJson = bankController.deposit(user.getAccountNumber(),userTest);
+        assertThat(depositJson.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(depositJson.getBody()).isEqualTo(user);
+        assertThat(Objects.requireNonNull(depositJson.getBody()).getAmount()).isEqualTo(1100000.0);
+    }
+    @Test
+    @Transactional
+    @Rollback
+    void check_transfer_Account_Balance(){
+        User user1 = userRepository.findAll().get(1);
+        User usertest = User.builder().amount(5000.0).accountNumber(user1.getAccountNumber()).build();
+        ResponseEntity<User> transferJson = bankController.transfer(user.getAccountNumber(),usertest);
+        assertThat(transferJson.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(transferJson.getBody()).isEqualTo(user);
+        assertThat(Objects.requireNonNull(transferJson.getBody()).getAmount()).isEqualTo(995000);
+        assertThat(user1.getAmount()).isEqualTo(5500.0);
+
     }
 }
