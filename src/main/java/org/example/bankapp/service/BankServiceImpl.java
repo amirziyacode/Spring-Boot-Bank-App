@@ -41,9 +41,6 @@ public class BankServiceImpl implements BankService {
 
         userMap.put(userId,user);
         userMap.put(userId1,user1);
-
-        System.out.println(userId + " created");
-        System.out.println(userId1 + " created");
     }
 
     @Override
