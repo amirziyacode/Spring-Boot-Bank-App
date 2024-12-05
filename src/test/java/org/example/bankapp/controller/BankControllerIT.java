@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -59,7 +60,7 @@ class BankControllerIT {
         ResponseEntity<User> withdrawal = bankController.withdrawal(user.getAccountNumber(),userTest);
         assertThat(withdrawal.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(withdrawal.getBody()).isEqualTo(user);
-        assertThat(withdrawal.getBody().getAmount()).isEqualTo(900000.0);
+        assertThat(Objects.requireNonNull(withdrawal.getBody()).getAmount()).isEqualTo(900000.0);
     }
 
     @Test
