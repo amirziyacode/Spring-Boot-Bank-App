@@ -18,7 +18,7 @@ public class BankServiceImpl implements BankService {
 
     private final Map<UUID, User> userMap;
     private final Map<Integer, TransactionsBank> transactionsBankMap;
-    private final User user;
+    public final User user;
 
     public BankServiceImpl() {
         userMap = new HashMap<>();
@@ -85,6 +85,7 @@ public class BankServiceImpl implements BankService {
                     .accountNumberTo(accountId)
                     .createdDate(LocalDateTime.now())
                     .build();
+            transactionsBankMap.put(user.getId(), transactionsBank);
             userMap.get(accountId).setAmount(userMap.get(accountId).getAmount() - amount);
         }
         return userMap.get(accountId);
@@ -103,6 +104,7 @@ public class BankServiceImpl implements BankService {
         User userTo = userMap.get(to);
         userFrom.setAmount(userFrom.getAmount() - amount);
         userTo.setAmount(userTo.getAmount() + amount);
+        transactionsBankMap.put(userFrom.getId(), transactionsBank);
         return userFrom;
     }
 }
