@@ -64,7 +64,13 @@ class BankControllerIT {
     }
 
     @Test
+    @Transactional
+    @Rollback
     void check_deposit_Account_Balance(){
-
+        User userTest = User.builder().amount(100000.0).build();
+        ResponseEntity<User> deposit = bankController.deposit(user.getAccountNumber(),userTest);
+        assertThat(deposit.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(deposit.getBody()).isEqualTo(user);
+        assertThat(Objects.requireNonNull(deposit.getBody()).getAmount()).isEqualTo(1100000.0);
     }
 }
