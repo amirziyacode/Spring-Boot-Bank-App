@@ -39,6 +39,15 @@ public class BankServiceImplJPA implements BankService {
     @Override
     public User deposit(UUID accountId, Double amount) {
         User user = userRepository.findByAccountNumber(accountId);
+        TransactionsBank deposit = TransactionsBank.builder()
+                .accountNumberTo(accountId)
+                .amount(amount)
+                .accountNumberFrom(accountId)
+                .user(userRepository.findByAccountNumber(accountId))
+                .createdDate(LocalDateTime.now())
+                .methodName("Deposit")
+                .build();
+        transactionsBankRepo.save(deposit);
         user.setAmount(user.getAmount() + amount);
         return userRepository.save(user);
     }
@@ -46,6 +55,15 @@ public class BankServiceImplJPA implements BankService {
     @Override
     public User withdraw(UUID accountId, Double amount) {
         User user = userRepository.findByAccountNumber(accountId);
+        TransactionsBank transactionsBank = TransactionsBank.builder()
+                .accountNumberTo(accountId)
+                .amount(amount)
+                .accountNumberFrom(accountId)
+                .user(userRepository.findByAccountNumber(accountId))
+                .createdDate(LocalDateTime.now())
+                .methodName("Withdraw")
+                .build();
+        transactionsBankRepo.save(transactionsBank);
         user.setAmount(user.getAmount() - amount);
         return userRepository.save(user);
     }
@@ -55,6 +73,16 @@ public class BankServiceImplJPA implements BankService {
         User fromUser = userRepository.findByAccountNumber(from);
         fromUser.setAmount(fromUser.getAmount() - amount);
         User toUser = userRepository.findByAccountNumber(to);
+        TransactionsBank transactionsBank = TransactionsBank.builder()
+                .accountNumberTo(to)
+                .amount(amount)
+                .accountNumberFrom(from)
+                .user(fromUser)
+                .createdDate(LocalDateTime.now())
+                .methodName("Transfer")
+                .amount(amount)
+                .build();
+        transactionsBankRepo.save(transactionsBank);
         toUser.setAmount(toUser.getAmount() + amount);
         return fromUser;
     }
