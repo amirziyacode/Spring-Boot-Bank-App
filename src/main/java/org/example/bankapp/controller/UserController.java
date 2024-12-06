@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +26,12 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUserOne(@PathVariable Integer id){
-        User user = userService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        Optional<User> byId = userService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(byId.orElse(null));
+    }
+
+    @PutMapping("user/update/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
     }
 }
