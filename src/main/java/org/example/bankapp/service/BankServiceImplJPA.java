@@ -4,7 +4,6 @@ import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.TransactionsBankRepo;
 import org.example.bankapp.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -15,11 +14,16 @@ import java.util.UUID;
 @Primary
 public class BankServiceImplJPA implements BankService {
 
-    @Autowired
+    final
     UserRepository userRepository;
 
-    @Autowired
+    final
     TransactionsBankRepo transactionsBankRepo;
+
+    public BankServiceImplJPA(UserRepository userRepository, TransactionsBankRepo transactionsBankRepo) {
+        this.userRepository = userRepository;
+        this.transactionsBankRepo = transactionsBankRepo;
+    }
 
     @Override
     public Optional<Double> viewBalance(UUID accountId) {
@@ -54,7 +58,7 @@ public class BankServiceImplJPA implements BankService {
 
     @Override
     public User withdraw(UUID accountId, Double amount) {
-        if(userRepository.findByAccountNumber(accountId).getAmount() >= amount) {
+        if(checkBalance(accountId, amount)) {
             User user = userRepository.findByAccountNumber(accountId);
             TransactionsBank transactionsBank = TransactionsBank.builder()
                     .accountNumberTo(accountId)
@@ -70,10 +74,9 @@ public class BankServiceImplJPA implements BankService {
         }
         return new User();
     }
-
     @Override
     public User transfer(UUID from, UUID to, Double amount) {
-        if(userRepository.findByAccountNumber(from).getAmount() >= amount) {
+        if(checkBalance(from, amount)) {
             User fromUser = userRepository.findByAccountNumber(from);
             fromUser.setAmount(fromUser.getAmount() - amount);
             User toUser = userRepository.findByAccountNumber(to);
@@ -91,5 +94,8 @@ public class BankServiceImplJPA implements BankService {
             return userRepository.save(fromUser);
         }
         return new User();
+    }
+    private boolean checkBalance(UUID accountId, Double amount) {
+        return userRepository.findByAccountNumber(accountId).getAmount() >= amount;
     }
 }
