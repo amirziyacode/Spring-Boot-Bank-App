@@ -33,10 +33,10 @@ class BankControllerIT {
     @Autowired
     UserRepository userRepository;
 
+
     MockMvc mockMvc;
 
     User user;
-
 
     @BeforeEach
     void setUp() {
@@ -50,6 +50,7 @@ class BankControllerIT {
         assertThat(balanceJson.getBody()).isPresent();
         assertThat(balanceJson.getBody().get()).isEqualTo(1000000.0);
         assertThat(balanceJson.getStatusCode()).isEqualTo(HttpStatus.OK);
+
     }
 
     @Test
