@@ -10,12 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -35,11 +34,13 @@ class UserControllerIT {
     WebApplicationContext webApplicationContext;
 
     MockMvc mockMvc;
+    private BCryptPasswordEncoder bCryptPasswordEncoder ;
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
          user = userRepository.findAll().get(0);
+        bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     @Test
@@ -63,12 +64,13 @@ class UserControllerIT {
     }
 
     @Test
+    @Rollback
+    @Transactional
     void update_filed()  {
         user.setUsername("Test");
-        user.setPassword("1213");
+        user.setPassword(bCryptPasswordEncoder.encode("2134"));
         ResponseEntity<User> getUpdateUser = userController.updateUser(user.getId(), user);
-        assertThat(getUpdateUser.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
-        assertThat(Objects.requireNonNull(getUpdateUser.getBody()).getPassword()).isEqualTo("Wrong password !!!");
+        assertThat(getUpdateUser.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test

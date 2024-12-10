@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
 
 @RestController
@@ -37,11 +36,10 @@ public class UserController {
 
     @PutMapping("user/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
-        Optional<User> byId = userService.findById(id);
-        if(!(byId.get().getPassword().equals(bCryptPasswordEncoder.encode(user.getPassword())))) {
-            user.setPassword("Wrong password !!!");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(user);
+        Optional<User> userId = userService.findById(id);
+        if(userId.get().getPassword().equals(bCryptPasswordEncoder.encode(user.getPassword()))) {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id,user));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id,user));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(user);
     }
 }
