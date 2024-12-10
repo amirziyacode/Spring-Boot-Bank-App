@@ -7,6 +7,7 @@ import org.example.bankapp.model.User;
 import org.example.bankapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
@@ -35,6 +37,11 @@ public class UserController {
 
     @PutMapping("user/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
+        Optional<User> byId = userService.findById(id);
+        if(!(byId.get().getPassword().equals(bCryptPasswordEncoder.encode(user.getPassword())))) {
+            user.setPassword("Wrong password !!!");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(user);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id,user));
     }
 }

@@ -14,6 +14,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Objects;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -57,6 +60,15 @@ class UserControllerIT {
         assertThat(getUser.getBody()).isNotNull();
         assertThat(getUser.getBody().getUsername()).isEqualTo(user1.getUsername());
         assertThat(getUser.getBody().getPassword()).isEqualTo(user1.getPassword());
+    }
+
+    @Test
+    void update_filed()  {
+        user.setUsername("Test");
+        user.setPassword("1213");
+        ResponseEntity<User> getUpdateUser = userController.updateUser(user.getId(), user);
+        assertThat(getUpdateUser.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(Objects.requireNonNull(getUpdateUser.getBody()).getPassword()).isEqualTo("Wrong password !!!");
     }
 
     @Test

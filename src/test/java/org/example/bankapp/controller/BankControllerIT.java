@@ -79,8 +79,8 @@ class BankControllerIT {
     @Rollback
     void check_transfer_Account_Balance(){
         User user1 = userRepository.findAll().get(1);
-        User usertest = User.builder().amount(5000.0).accountNumber(user1.getAccountNumber()).build();
-        ResponseEntity<User> transferJson = bankController.transfer(user.getAccountNumber(),usertest);
+        User userTest = User.builder().amount(5000.0).accountNumber(user1.getAccountNumber()).build();
+        ResponseEntity<User> transferJson = bankController.transfer(user.getAccountNumber(),userTest);
         assertThat(transferJson.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(transferJson.getBody()).isEqualTo(user);
         assertThat(Objects.requireNonNull(transferJson.getBody()).getAmount()).isEqualTo(995000);
