@@ -27,23 +27,8 @@ public class UserServiceJPA implements UserService {
 
     @Override
     public Optional<User> findById(Integer id) {
-        return userRepository.findById(id);
+        return Optional.empty();
     }
 
-    @Override
-    public User updateUser(Integer idUser, User newUser) {
-        Optional<User> oldUser  = userRepository.findById(idUser);
-        if (isCarrotAccount(newUser, oldUser)) {
-            if (oldUser.isPresent()) {
-                oldUser.get().setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-                oldUser.get().setUsername(newUser.getUsername());
-            }
-        }
-        return userRepository.save(oldUser.get());
-    }
-
-    private boolean isCarrotAccount(User newUser, Optional<User> oldUser) {
-        return oldUser.isPresent() && oldUser.get().getPassword().equals(bCryptPasswordEncoder.encode(newUser.getPassword()));
-    }
 
 }

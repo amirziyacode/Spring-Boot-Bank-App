@@ -33,13 +33,4 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(byId.orElse(null));
     }
-
-    @PutMapping("user/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
-        Optional<User> userId = userService.findById(id);
-        if(userId.get().getPassword().equals(bCryptPasswordEncoder.encode(user.getPassword()))) {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id,user));
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(user);
-    }
 }

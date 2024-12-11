@@ -1,6 +1,5 @@
 package org.example.bankapp.controller;
 
-import jakarta.transaction.Transactional;
 import lombok.val;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.UserRepository;
@@ -11,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -63,27 +61,6 @@ class UserControllerIT {
         assertThat(getUser.getBody().getPassword()).isEqualTo(user1.getPassword());
     }
 
-    @Test
-    @Rollback
-    @Transactional
-    void update_filed()  {
-        user.setUsername("Test");
-        user.setPassword(bCryptPasswordEncoder.encode("2134"));
-        ResponseEntity<User> getUpdateUser = userController.updateUser(user.getId(), user);
-        assertThat(getUpdateUser.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-
-    @Test
-    @Rollback
-    @Transactional
-    void updateUser() {
-        user.setUsername("Test");
-        user.setPassword("1234");
-        ResponseEntity<User> getUpdateUser = userController.updateUser(user.getId(), user);
-        assertThat(getUpdateUser.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(getUpdateUser.getBody()).isNotNull();
-        assertThat(getUpdateUser.getBody().getUsername()).isEqualTo(user.getUsername());
-    }
     @Test
     void getUserNotFound() {
         ResponseEntity<User> getUser = userController.getUser(999);
