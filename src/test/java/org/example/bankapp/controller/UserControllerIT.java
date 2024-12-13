@@ -2,6 +2,7 @@ package org.example.bankapp.controller;
 
 import lombok.val;
 import org.example.bankapp.model.User;
+import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,17 @@ class UserControllerIT {
         assertThat(getUser.getBody()).isNotNull();
         assertThat(getUser.getBody().getUsername()).isEqualTo(user1.getUsername());
         assertThat(getUser.getBody().getPassword()).isEqualTo(user1.getPassword());
+    }
+
+    @Test
+    void forgotPassword_user() {
+        UserPassword userPassword = UserPassword.builder().oldPassword("1234").newPassword("7777").confirmPassword("7777").build();
+
+        ResponseEntity<User> getUser = userController.forgetPassword(userPassword,user.getId());
+        String password = getUser.getBody().getPassword();
+        assertThat(getUser).isNotNull();
+        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+//        assertThat(bCryptPasswordEncoder.matches("7777",password)).isTrue(); //$2a$10$BlnTs1QESQlf1/x1kymUd.mjSgRR.OXVPscfxR0FePD7pRDEgpLW.
     }
 
     @Test

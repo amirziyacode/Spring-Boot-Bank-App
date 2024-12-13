@@ -1,6 +1,7 @@
 package org.example.bankapp.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.UserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +28,14 @@ public class UserServiceJPA implements UserService {
 
     @Override
     public Optional<User> findById(Integer id) {
-        return Optional.empty();
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public User forgetPassword(Integer id, UserPassword user) {
+        Optional<User> byId = userRepository.findById(id);
+        byId.get().setPassword(bCryptPasswordEncoder.encode(user.getNewPassword()));
+        return userRepository.save(byId.get());
     }
 
 
