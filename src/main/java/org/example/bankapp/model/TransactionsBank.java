@@ -25,5 +25,7 @@ public class TransactionsBank {
     private double amount;
     @CreationTimestamp
     private LocalDateTime createdDate;
-    private Long user_Id;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false,referencedColumnName = "id")
+    private User user;
 }
