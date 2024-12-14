@@ -7,6 +7,7 @@ import org.example.bankapp.repo.UserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ public class BankServiceImplJPA implements BankService {
                 .methodName("ViewBalance")
                 .createdDate(LocalDateTime.now())
                 .build();
+        userRepository.findByAccountNumber(accountId).setTransactions(List.of(balance));
         transactionsBankRepo.save(balance);
         return Optional.of(amount);
     }

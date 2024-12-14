@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
+import org.example.bankapp.repo.TransactionsBankRepo;
 import org.example.bankapp.repo.UserRepository;
 import org.example.bankapp.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final TransactionsBankRepo transactionsBankRepo;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder  = new BCryptPasswordEncoder();
 
@@ -44,10 +46,6 @@ public class UserController {
 
     @GetMapping("/trx/{id}")
     public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
-        User byId = userRepository.findAll().get(id);
-        if(byId.getTransactions() == null){
-            return ResponseEntity.status(HttpStatus.OK).body(byId.getTransactions());
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(transactionsBankRepo.findByUser(userRepository.findById(id).get()));
     }
 }

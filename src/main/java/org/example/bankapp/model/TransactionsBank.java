@@ -27,6 +27,6 @@ public class TransactionsBank {
     private LocalDateTime createdDate;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false,referencedColumnName = "id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
