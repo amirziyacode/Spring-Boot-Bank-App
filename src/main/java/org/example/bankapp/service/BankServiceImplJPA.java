@@ -32,7 +32,7 @@ public class BankServiceImplJPA implements BankService {
                 .accountNumberTo(accountId)
                 .amount(amount)
                 .accountNumberFrom(accountId)
-                .user(userRepository.findByAccountNumber(accountId))
+                .userId(userRepository.findByAccountNumber(accountId).getId())
                 .methodName("ViewBalance")
                 .createdDate(LocalDateTime.now())
                 .build();
@@ -47,7 +47,7 @@ public class BankServiceImplJPA implements BankService {
                 .accountNumberTo(accountId)
                 .amount(amount)
                 .accountNumberFrom(accountId)
-                .user(userRepository.findByAccountNumber(accountId))
+                .userId(userRepository.findByAccountNumber(accountId).getId())
                 .createdDate(LocalDateTime.now())
                 .methodName("Deposit")
                 .build();
@@ -64,7 +64,7 @@ public class BankServiceImplJPA implements BankService {
                     .accountNumberTo(accountId)
                     .amount(amount)
                     .accountNumberFrom(accountId)
-                    .user(userRepository.findByAccountNumber(accountId))
+                    .userId(userRepository.findByAccountNumber(accountId).getId())
                     .createdDate(LocalDateTime.now())
                     .methodName("Withdraw")
                     .build();
@@ -84,7 +84,7 @@ public class BankServiceImplJPA implements BankService {
                     .accountNumberTo(to)
                     .amount(amount)
                     .accountNumberFrom(from)
-                    .user(fromUser)
+                    .userId(fromUser.getId())
                     .createdDate(LocalDateTime.now())
                     .methodName("Transfer")
                     .amount(amount)

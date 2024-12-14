@@ -3,6 +3,7 @@ package org.example.bankapp.service;
 import lombok.RequiredArgsConstructor;
 import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.UserPassword;
+import org.example.bankapp.repo.TransactionsBankRepo;
 import org.example.bankapp.repo.UserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class UserServiceJPA implements UserService {
 
     private final UserRepository userRepository;
+    private final TransactionsBankRepo transactionsBankRepo;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 
@@ -30,8 +32,8 @@ public class UserServiceJPA implements UserService {
     }
 
     @Override
-    public Optional<List<TransactionsBank>> getTransactions(Integer id) {
-        return Optional.ofNullable(userRepository.getReferenceById(id).getTransactions());
+    public Optional<List<TransactionsBank>> getTransactions(Integer userId) {
+        return Optional.ofNullable(transactionsBankRepo.findByUserId(userId));
     }
 
 
