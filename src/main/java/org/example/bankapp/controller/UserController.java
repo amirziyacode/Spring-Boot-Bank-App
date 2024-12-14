@@ -3,6 +3,7 @@ package org.example.bankapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.UserRepository;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,7 +32,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
-    @PostMapping("/forgetPassword/{id}")
+    @PostMapping("user/forgetPassword/{id}")
     public ResponseEntity<User> forgetPassword(@RequestBody UserPassword user, @PathVariable Integer id) {
         Optional<User> userId = userRepository.findById(id);
         if(bCryptPasswordEncoder.matches(user.getOldPassword(),userId.get().getPassword()) && user.getNewPassword().equals( user.getConfirmPassword())) {
@@ -39,13 +42,12 @@ public class UserController {
         return  ResponseEntity.status(HttpStatus.FORBIDDEN).body(userId.get());
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Integer id){
-        Optional<User> byId = userService.findById(id);
-        if(byId.isEmpty()) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    @GetMapping("/trx/{id}")
+    public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
+        User byId = userRepository.findAll().get(id);
+        if(byId.getTransactions() == null){
+            return ResponseEntity.status(HttpStatus.OK).body(byId.getTransactions());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(byId.orElse(null));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 }

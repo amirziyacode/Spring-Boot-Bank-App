@@ -1,12 +1,15 @@
 package org.example.bankapp.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.UserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.example.bankapp.model.User;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,9 +30,10 @@ public class UserServiceJPA implements UserService {
     }
 
     @Override
-    public Optional<User> findById(Integer id) {
-        return userRepository.findById(id);
+    public Optional<List<TransactionsBank>> getTransactions(Integer id) {
+        return Optional.ofNullable(userRepository.getReferenceById(id).getTransactions());
     }
+
 
     @Override
     public User forgetPassword(Integer id, UserPassword user) {
