@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface UserService {
     User save(User user);
-    Optional<List<TransactionsBank>> getTransactions(Long userId);
+    Optional<List<TransactionsBank>> getTransactions(Integer userId);
     User forgetPassword(Integer id, UserPassword user);
 }

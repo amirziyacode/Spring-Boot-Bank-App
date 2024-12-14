@@ -7,7 +7,6 @@ import org.example.bankapp.repo.UserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,15 +28,16 @@ public class BankServiceImplJPA implements BankService {
     @Override
     public Optional<Double> viewBalance(UUID accountId) {
         double amount = userRepository.findByAccountNumber(accountId).getAmount();
+        User user = userRepository.findByAccountNumber(accountId);
         TransactionsBank balance = TransactionsBank.builder()
                 .accountNumberTo(accountId)
                 .amount(amount)
+                .userId(user.getId())
                 .accountNumberFrom(accountId)
-                .user(userRepository.findByAccountNumber(accountId))
+                .userId(user.getId())
                 .methodName("ViewBalance")
                 .createdDate(LocalDateTime.now())
                 .build();
-        userRepository.findByAccountNumber(accountId).setTransactions(List.of(balance));
         transactionsBankRepo.save(balance);
         return Optional.of(amount);
     }
@@ -49,7 +49,7 @@ public class BankServiceImplJPA implements BankService {
                 .accountNumberTo(accountId)
                 .amount(amount)
                 .accountNumberFrom(accountId)
-                .user(userRepository.findByAccountNumber(accountId))
+                .userId(user.getId())
                 .createdDate(LocalDateTime.now())
                 .methodName("Deposit")
                 .build();
@@ -66,7 +66,7 @@ public class BankServiceImplJPA implements BankService {
                     .accountNumberTo(accountId)
                     .amount(amount)
                     .accountNumberFrom(accountId)
-                    .user(userRepository.findByAccountNumber(accountId))
+                    .userId(user.getId())
                     .createdDate(LocalDateTime.now())
                     .methodName("Withdraw")
                     .build();
@@ -86,7 +86,7 @@ public class BankServiceImplJPA implements BankService {
                     .accountNumberTo(to)
                     .amount(amount)
                     .accountNumberFrom(from)
-                    .user(fromUser)
+                    .userId(fromUser.getId())
                     .createdDate(LocalDateTime.now())
                     .methodName("Transfer")
                     .amount(amount)

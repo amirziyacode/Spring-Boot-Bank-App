@@ -32,7 +32,7 @@ public class UserServiceJPA implements UserService {
     }
 
     @Override
-    public Optional<List<TransactionsBank>> getTransactions(Long userId) {
+    public Optional<List<TransactionsBank>> getTransactions(Integer userId) {
         return Optional.ofNullable(transactionsBank.findByUserId(userId));
     }
 

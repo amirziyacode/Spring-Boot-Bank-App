@@ -46,6 +46,6 @@ public class UserController {
 
     @GetMapping("/trx/{id}")
     public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
-        return ResponseEntity.status(HttpStatus.OK).body(transactionsBankRepo.findByUser(userRepository.findById(id).get()));
+        return ResponseEntity.status(HttpStatus.OK).body(transactionsBankRepo.findByUserId(id));
     }
 }

@@ -25,5 +25,5 @@ public class TransactionsBank {
     private double amount;
     @CreationTimestamp
     private LocalDateTime createdDate;
-    private Long userId;
+    private Integer userId;
 }
