@@ -22,8 +22,4 @@ public class User {
     private String password;
     private double amount;
     private UUID accountNumber;
-
-    @OneToMany(mappedBy = "user")
-    private List<TransactionsBank> transactions;
-
 }
