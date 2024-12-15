@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +36,8 @@ public class UserController {
     @PostMapping("user/forgetPassword/{id}")
     public ResponseEntity<User> forgetPassword(@RequestBody UserPassword user, @PathVariable Integer id) {
         Optional<User> userId = userRepository.findById(id);
-        if(bCryptPasswordEncoder.matches(user.getOldPassword(),userId.get().getPassword()) && user.getNewPassword().equals( user.getConfirmPassword())) {
+        if(bCryptPasswordEncoder.matches(user.getOldPassword(),Optional.of(userId.get().getPassword()).orElse(null))
+                && user.getNewPassword().equals( user.getConfirmPassword())) {
             userService.forgetPassword(id,user);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(userId.get());
         }
@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping("/trx/{id}")
     public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
         List<TransactionsBank> trx = transactionsBankRepo.findByUserId(id);
-        if(trx != null){
+        if(!(trx.isEmpty())){
             return ResponseEntity.status(HttpStatus.OK).body(trx);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

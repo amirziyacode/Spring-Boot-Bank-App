@@ -10,5 +10,4 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(String username);
     User findByAccountNumber(UUID accountNumber);
-    User findUserById(Integer id);
 }
