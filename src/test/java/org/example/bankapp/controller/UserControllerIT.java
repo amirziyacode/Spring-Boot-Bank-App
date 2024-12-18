@@ -47,15 +47,14 @@ class UserControllerIT {
     }
 
     @Test
-    @Transactional
     void get_Transactions_not_found() {
         ResponseEntity<List<TransactionsBank>> getUser = userController.getTransactions(user.getId());
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    @Transactional
     @Rollback
+    @Transactional
     void get_Transactions() {
         bankController.getBalance(user.getAccountNumber()); // for add a Transactions !!!
         ResponseEntity<List<TransactionsBank>> getTrx = userController.getTransactions(user.getId());
