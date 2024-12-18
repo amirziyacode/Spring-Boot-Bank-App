@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class BankServiceImpl implements BankService {
 
     private final Map<UUID, User> userMap;
-    private final AtomicReference<Map<Integer, TransactionsBank>> transactionsBankMap = new AtomicReference<Map<Integer, TransactionsBank>>();
+    private final AtomicReference<Map<Integer, TransactionsBank>> transactionsBankMap = new AtomicReference<>();
     public final User user;
 
     public BankServiceImpl() {

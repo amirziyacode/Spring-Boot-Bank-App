@@ -5,6 +5,7 @@ import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.UserRepository;
+import org.example.bankapp.service.BankService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
+import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -24,6 +27,8 @@ class UserControllerIT {
 
     @Autowired
     UserController userController;
+
+
 
     @Autowired
     UserRepository userRepository;
@@ -34,6 +39,9 @@ class UserControllerIT {
     WebApplicationContext webApplicationContext;
 
     MockMvc mockMvc;
+
+    @Autowired
+    private BankService bankService;
     private BCryptPasswordEncoder bCryptPasswordEncoder ;
 
     @BeforeEach
@@ -44,10 +52,17 @@ class UserControllerIT {
     }
 
     @Test
+    void get_Transactions_not_found() {
+        ResponseEntity<List<TransactionsBank>> getUser = userController.getTransactions(user.getId());
+        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
     void get_Transactions() {
-//        ResponseEntity<TransactionsBank> getUser = userController.getTransactions(user.getId());
-//        assertThat(getUser).isNotNull();
-//        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.OK);
+        ResponseEntity<List<TransactionsBank>> getTrx = userController.getTransactions(user.getId());
+        assertThat(getTrx.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -71,13 +86,5 @@ class UserControllerIT {
         String password = getUser.getBody().getPassword();
         assertThat(getUser).isNotNull();
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
-//        assertThat(bCryptPasswordEncoder.matches("7777",password)).isTrue(); //$2a$10$BlnTs1QESQlf1/x1kymUd.mjSgRR.OXVPscfxR0FePD7pRDEgpLW.
     }
-
-//    @Test
-//    void getUserNotFound() {
-//        ResponseEntity<User> getUser = userController.getUser(999);
-//        assertThat(getUser.getBody()).isEqualTo(null);
-//        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-//    }
 }

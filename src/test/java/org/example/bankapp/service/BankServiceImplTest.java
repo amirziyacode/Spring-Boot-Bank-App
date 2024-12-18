@@ -85,7 +85,7 @@ class BankServiceImplTest {
 
     @Test
     void transfer() throws Exception {
-        given(bankService.withdraw(any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
+        given(bankService.transfer(any(UUID.class),any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
         mockMvc.perform(post("/bank/transfer/{bankId}",bankId)
                 .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
                 .content("{" +
