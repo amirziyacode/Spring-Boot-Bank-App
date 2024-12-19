@@ -27,12 +27,14 @@ public class BankServiceImpl implements BankService {
         UUID userId = UUID.randomUUID();
         UUID userId1 = UUID.randomUUID();
         user = User.builder()
+                .id(1)
                 .accountNumber(userId)
                 .username("AmirZiya")
-                .password(UUID.randomUUID().toString())
+                .password("1234")
                 .amount(1000)
                 .build();
         User user1 = User.builder()
+                .id(2)
                 .accountNumber(userId1)
                 .username("Ali")
                 .password(UUID.randomUUID().toString())
