@@ -1,7 +1,6 @@
 package org.example.bankapp.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.bankapp.controller.BankController;
 import org.example.bankapp.controller.UserController;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.TransactionsBankRepo;
