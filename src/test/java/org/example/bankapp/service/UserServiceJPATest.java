@@ -2,6 +2,7 @@ package org.example.bankapp.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.bankapp.controller.UserController;
+import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.TransactionsBankRepo;
 import org.example.bankapp.repo.UserRepository;
@@ -12,6 +13,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -45,5 +49,17 @@ class UserServiceJPATest {
                         .content(objectMapper.writeValueAsString(new User()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
+    }
+    @Test
+    void get_transactions_bank_not_Found()throws Exception {
+        User user = User.builder()
+                .id(1)
+                .username("test")
+                .password("test")
+                .build();
+        given(transactionsBankRepo.findByUserId(any(Integer.class))).willReturn(new ArrayList<>());
+        mockMvc.perform(get("/transactions/{id}",user.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }

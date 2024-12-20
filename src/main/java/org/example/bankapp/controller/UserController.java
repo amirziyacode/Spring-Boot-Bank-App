@@ -44,7 +44,7 @@ public class UserController {
         return  ResponseEntity.status(HttpStatus.FORBIDDEN).body(userId.get());
     }
 
-    @GetMapping("/trx/{id}")
+    @GetMapping("/transactions/{id}")
     public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
         List<TransactionsBank> trx = transactionsBankRepo.findByUserId(id);
         if(!(trx.isEmpty()) ) {
