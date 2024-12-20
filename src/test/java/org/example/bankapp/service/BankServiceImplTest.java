@@ -34,6 +34,7 @@ class BankServiceImplTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
     @Captor
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 

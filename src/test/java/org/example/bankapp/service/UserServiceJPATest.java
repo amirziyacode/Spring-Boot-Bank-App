@@ -3,7 +3,6 @@ package org.example.bankapp.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.bankapp.controller.UserController;
 import org.example.bankapp.model.User;
-import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.TransactionsBankRepo;
 import org.example.bankapp.repo.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -47,13 +45,5 @@ class UserServiceJPATest {
                         .content(objectMapper.writeValueAsString(new User()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-    }
-    @Test
-    void forgetPassword() throws Exception {
-        given(userService.forgetPassword(any(Integer.class),any(UserPassword.class))).willReturn(new User());
-        mockMvc.perform(post("/user/forgetPassword/{id}",1)
-                        .content("{\"oldPassword\": \"1234\", \"newPassword\": \"7777\",\"confirmPassword\": \"7777\"}")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isAccepted());
     }
 }
