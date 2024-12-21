@@ -6,6 +6,7 @@ import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.TransactionsBankRepo;
 import org.example.bankapp.repo.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -38,11 +39,31 @@ class UserServiceJPATest {
 
     @MockBean
     private TransactionsBankRepo transactionsBankRepo;
-
+    private User user;
+    TransactionsBank transactionsBank;;
 
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp() {
+        user = User.builder()
+                .id(1)
+                .accountNumber(UUID.randomUUID())
+                .username("test")
+                .password("test")
+                .amount(1000)
+                .build();
+         transactionsBank =  TransactionsBank.builder()
+                .userId(1)
+                .amount(user.getAmount())
+                .accountNumberFrom(user.getAccountNumber())
+                .accountNumberTo(user.getAccountNumber())
+                .createdDate(LocalDateTime.now())
+                .methodName("test")
+                .build();
+    }
 
     @Test
     void save_user()throws Exception {
@@ -55,11 +76,6 @@ class UserServiceJPATest {
     }
     @Test
     void get_transactions_bank_not_Found()throws Exception {
-        User user = User.builder()
-                .id(1)
-                .username("test")
-                .password("test")
-                .build();
         given(transactionsBankRepo.findByUserId(any(Integer.class))).willReturn(new ArrayList<>());
         mockMvc.perform(get("/transactions/{id}",user.getId())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -68,22 +84,6 @@ class UserServiceJPATest {
 
     @Test
     void get_transactions_bank()throws Exception {
-        User user = User.builder()
-                .id(1)
-                .accountNumber(UUID.randomUUID())
-                .username("test")
-                .password("test")
-                .amount(1000)
-                .build();
-        TransactionsBank transactionsBank =  TransactionsBank.builder()
-                .userId(1)
-                .amount(user.getAmount())
-                .accountNumberFrom(user.getAccountNumber())
-                .accountNumberTo(user.getAccountNumber())
-                .createdDate(LocalDateTime.now())
-                .methodName("test")
-                .build();
-
         given(transactionsBankRepo.findByUserId(user.getId())).willReturn(List.of(transactionsBank));
         mockMvc.perform(get("/transactions/{id}",user.getId())
                 .contentType(MediaType.APPLICATION_JSON))

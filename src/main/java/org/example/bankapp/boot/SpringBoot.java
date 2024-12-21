@@ -17,12 +17,16 @@ public class SpringBoot implements CommandLineRunner {
 
     private  final BCryptPasswordEncoder bCryptPasswordEncoder  = new BCryptPasswordEncoder();
 
-    @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    public SpringBoot(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         if(userRepository.count() == 0) {
             loadUser();
         }

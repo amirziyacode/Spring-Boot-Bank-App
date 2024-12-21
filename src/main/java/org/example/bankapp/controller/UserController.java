@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +29,14 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
+        List<User> all = userRepository.findAll();
+        userRepository.findByUsername(user.getUsername());
+        for (User u : all) {
+            if(u.getUsername().equals(user.getUsername())) {
+                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                        User.builder().username(user.getUsername() + " Are Excite !!!").build());
+            }
+        }
         User save = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
