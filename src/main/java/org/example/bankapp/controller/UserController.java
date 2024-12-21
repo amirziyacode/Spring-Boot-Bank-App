@@ -34,7 +34,7 @@ public class UserController {
         for (User u : all) {
             if(u.getUsername().equals(user.getUsername())) {
                 return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        User.builder().username(user.getUsername() + " Are Excite !!!").build());
+                        User.builder().username(user.getUsername() + " Are Available !!!").build());
             }
         }
         User save = userService.save(user);
