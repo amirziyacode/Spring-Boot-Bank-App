@@ -13,10 +13,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import java.util.Objects;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -46,9 +43,8 @@ class BankControllerIT {
 
     @Test
     void check_view_Balance(){
-        ResponseEntity<Optional<Double>> balanceJson = bankController.getBalance(user.getAccountNumber());
-        assertThat(balanceJson.getBody()).isPresent();
-        assertThat(balanceJson.getBody().get()).isEqualTo(1000000.0);
+        ResponseEntity<Double> balanceJson = bankController.getBalance(user.getAccountNumber());
+        assertThat(balanceJson.getBody()).isEqualTo(1000000.0);
         assertThat(balanceJson.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     }

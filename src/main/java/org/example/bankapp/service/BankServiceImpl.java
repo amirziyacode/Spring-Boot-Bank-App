@@ -1,15 +1,12 @@
 package org.example.bankapp.service;
 
 import lombok.extern.slf4j.Slf4j;
-
 import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -47,7 +44,7 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Optional<Double> viewBalance(UUID accountId) {
+    public Double viewBalance(UUID accountId) {
         TransactionsBank transactionsBank = TransactionsBank.builder()
                 .createdDate(LocalDateTime.now())
                 .accountNumberFrom(user.getAccountNumber())
@@ -57,7 +54,7 @@ public class BankServiceImpl implements BankService {
                 .methodName("ViewBalance")
                 .build();
         transactionsBankMap.get().put(user.getId(), transactionsBank);
-        return Optional.ofNullable(userMap.get(accountId)).map(User::getAmount);
+        return userMap.get(accountId).getAmount();
     }
 
     @Override
@@ -79,8 +76,14 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public User withdraw(UUID accountId, Double amount) {
-        if(amount > 0) {
-            TransactionsBank transactionsBank = TransactionsBank.builder()
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero");
+        }
+        User user1 = userMap.get(accountId);
+        if (user1 == null) {
+            throw new IllegalArgumentException("No user found for accountId: " + accountId);
+        }
+        TransactionsBank transactionsBank = TransactionsBank.builder()
                     .methodName("Withdraw")
                     .amount(amount)
                     .userId(user.getId())
@@ -88,10 +91,14 @@ public class BankServiceImpl implements BankService {
                     .accountNumberTo(accountId)
                     .createdDate(LocalDateTime.now())
                     .build();
-            transactionsBankMap.get().put(user.getId(), transactionsBank);
-            userMap.get(accountId).setAmount(userMap.get(accountId).getAmount() - amount);
+        if (transactionsBankMap.get() == null) {
+            throw new IllegalStateException("TransactionsBankMap is not initialized");
         }
-        return userMap.get(accountId);
+        transactionsBankMap.get().put(user.getId(), transactionsBank);
+        // Reduce the amount
+        user1.setAmount(user1.getAmount() - amount);
+
+        return user1;
     }
 
     @Override

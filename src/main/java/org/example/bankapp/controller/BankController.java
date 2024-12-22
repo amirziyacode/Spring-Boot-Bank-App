@@ -8,7 +8,6 @@ import org.example.bankapp.service.BankService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -20,8 +19,8 @@ public class BankController {
     private  final UserRepository userRepository;
 
     @GetMapping("/bank/balance/{bankId}")
-    public ResponseEntity<Optional<Double>> getBalance(@PathVariable("bankId") UUID bankId) {
-        return  new ResponseEntity<>(Optional.of(bankService.viewBalance(bankId)).get(), HttpStatus.OK);
+    public ResponseEntity<Double> getBalance(@PathVariable("bankId") UUID bankId) {
+        return ResponseEntity.status(HttpStatus.OK).body(bankService.viewBalance(bankId));
     }
 
     @PostMapping("/bank/withdrawal/{bankId}")

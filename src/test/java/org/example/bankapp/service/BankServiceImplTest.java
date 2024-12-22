@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,52 +44,41 @@ class BankServiceImplTest {
     @Captor
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
-    private User user;
-
+    private BankServiceImpl bankServiceImpl;
 
     @BeforeEach
     void setUp() {
-        bankService = new BankServiceImpl();
-            user = User.builder()
-                .id(1)
-                .accountNumber(UUID.randomUUID())
-                    .amount(100.0)
-                    .username("Test").password("password")
-                .build();
+        bankServiceImpl = new BankServiceImpl();
     }
 
     @Test
     void viewBalance()throws Exception {
-//        given(bankService.viewBalance(user.getAccountNumber())).willReturn(Optional.of(user.getAmount()));
-        mockMvc.perform(get("/bank/balance/{bankId}",user.getAccountNumber())
+        given(bankService.viewBalance(any(UUID.class))).willReturn(anyDouble());
+        mockMvc.perform(get("/bank/balance/{bankId}",bankServiceImpl.user.getAccountNumber())
                         .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
-//
-//    @Test
-//    void deposit()  throws Exception {
-//        bankServiceImpl.deposit(bankServiceImpl.user.getAccountNumber(), 100.0);
-//        given(bankService.deposit(any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
-//        mockMvc.perform(post("/bank/deposit/{bankId}",bankId)
-//                .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
-//                .accept(MediaType.APPLICATION_JSON)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"amount\":\"100.0\"}"))
-//                .andExpect(status().isOk());
-//        assertThat(bankServiceImpl.user.getAmount()).isEqualTo(1100.0);
-//    }
-//
+
+    @Test
+    void deposit()  throws Exception {
+        given(bankService.deposit(any(UUID.class),anyDouble())).willReturn(bankServiceImpl.user);
+        mockMvc.perform(post("/bank/deposit/{bankId}",bankServiceImpl.user.getAccountNumber())
+                .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
+                .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"amount\":\"100.0\"}"))
+                .andExpect(status().isOk());
+    }
+
 //    @Test
 //    void withdraw() throws Exception {
-//        bankServiceImpl.withdraw(bankServiceImpl.user.getAccountNumber(), 100.0);
-//        given(bankService.withdraw(any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
-//        mockMvc.perform(post("/bank/withdrawal/{bankId}",bankId)
-//                        .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
+//        given(bankService.withdraw(any(UUID.class),anyDouble())).willReturn(bankServiceImpl.withdraw(bankServiceImpl.user.getAccountNumber(),100.0));
+//        mockMvc.perform(post("/bank/withdrawal/{bankId}",UUID.randomUUID())
 //                        .content("{\"amount\":\"100.0\"}")
 //                .contentType(MediaType.APPLICATION_JSON)
 //                        .accept(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isOk());
-//     assertThat(bankServiceImpl.user.getAmount()).isEqualTo(900.0);
+//
 //    }
 //    @Test
 //    void withdraw_greater_than_balance() throws Exception {
@@ -101,17 +91,16 @@ class BankServiceImplTest {
 //                        .accept(MediaType.APPLICATION_JSON))
 //                .andExpect(status().isForbidden());
 //    }
-//    @Test
-//    void transfer() throws Exception {
-//        given(bankService.transfer(any(UUID.class),any(UUID.class),any(Double.class))).willReturn(bankServiceImpl.user);
-//        mockMvc.perform(post("/bank/transfer/{bankId}",bankId)
-//                .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
-//                .content("{" +
-//                        "\"accountNumber\":\""+bankId+"\""+","+
-//                        "\"amount\":\"100.0\"" +
-//                        "}").contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    void transfer() throws Exception {
+        mockMvc.perform(post("/bank/transfer/{bankId}",bankServiceImpl.user.getAccountNumber())
+                .contentType(objectMapper.writeValueAsString(bankServiceImpl.user))
+                .content("{" +
+                        "\"accountNumber\":\""+bankServiceImpl.user.getAccountNumber()+"\""+","+
+                        "\"amount\":\"100.0\"" +
+                        "}").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void not_found_balance() {
