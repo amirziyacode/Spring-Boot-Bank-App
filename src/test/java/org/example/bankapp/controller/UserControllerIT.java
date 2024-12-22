@@ -1,6 +1,5 @@
 package org.example.bankapp.controller;
 
-import lombok.val;
 import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
@@ -48,7 +47,7 @@ class UserControllerIT {
 
     @Test
     void get_Transactions_not_found() {
-        ResponseEntity<List<TransactionsBank>> getUser = userController.getTransactions(user.getId());
+        ResponseEntity<List<TransactionsBank>> getUser = userController.getTransactions(99);
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -63,7 +62,7 @@ class UserControllerIT {
 
     @Test
     void createUser() {
-        val user1 = User.builder()
+        User user1 = User.builder()
                 .username("Test")
                 .password("1234")
                 .build();
