@@ -40,7 +40,7 @@ class UserServiceJPATest {
     @MockBean
     private TransactionsBankRepo transactionsBankRepo;
     private User user;
-    TransactionsBank transactionsBank;;
+    private TransactionsBank transactionsBank;;
 
 
     @Autowired
