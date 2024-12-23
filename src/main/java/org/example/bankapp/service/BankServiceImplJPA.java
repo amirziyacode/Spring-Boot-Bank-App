@@ -41,6 +41,9 @@ public class BankServiceImplJPA implements BankService {
 
     @Override
     public User deposit(UUID accountId, Double amount) {
+        if(amount <= 0) {
+            throw new IllegalArgumentException("Amount cannot be negative or zero !!");
+        }
         User user = userRepository.findByAccountNumber(accountId);
         TransactionsBank deposit = TransactionsBank.builder()
                 .accountNumberTo(accountId)
@@ -71,10 +74,15 @@ public class BankServiceImplJPA implements BankService {
             user.setAmount(user.getAmount() - amount);
             return userRepository.save(user);
         }
-        return new User();
+        else {
+            throw  new RuntimeException("Balance not enough");
+        }
     }
     @Override
     public User transfer(UUID from, UUID to, Double amount) {
+        if(userRepository.findByAccountNumber(to) == null || userRepository.findByAccountNumber(from) == null) {
+            throw  new RuntimeException("Account not found");
+        }
         if(checkBalance(from, amount)) {
             User fromUser = userRepository.findByAccountNumber(from);
             fromUser.setAmount(fromUser.getAmount() - amount);
@@ -92,7 +100,9 @@ public class BankServiceImplJPA implements BankService {
             toUser.setAmount(toUser.getAmount() + amount);
             return userRepository.save(fromUser);
         }
-        return new User();
+        else {
+            throw  new RuntimeException("Balance not enough");
+        }
     }
     private boolean checkBalance(UUID accountId, Double amount) {
         return userRepository.findByAccountNumber(accountId).getAmount() >= amount;

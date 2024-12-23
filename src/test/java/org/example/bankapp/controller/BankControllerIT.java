@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import java.util.Objects;
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -33,12 +35,14 @@ class BankControllerIT {
 
     MockMvc mockMvc;
 
-    User user;
+    User user,userTest,user1;
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         user = userRepository.findAll().get(0);
+        user1 = userRepository.findAll().get(1);
+        userTest = User.builder().amount(5000.0).accountNumber(UUID.randomUUID()).build(); // Account Not Found !!
     }
 
     @Test
@@ -82,5 +86,20 @@ class BankControllerIT {
         assertThat(Objects.requireNonNull(transferJson.getBody()).getAmount()).isEqualTo(995000);
         assertThat(user1.getAmount()).isEqualTo(5500.0);
 
+    }
+
+    @Test
+    void runTimeException_with_transfer(){
+        assertThatRuntimeException().isThrownBy(() -> bankController.transfer(user1.getAccountNumber(),userTest));
+    }
+
+    @Test
+    void IllegalArgumentException_with_transfer(){
+        assertThatRuntimeException().isThrownBy(() -> bankController.transfer(user1.getAccountNumber(),userTest));
+    }
+
+    @Test
+    void withdraw_greater_than_Account_Balance(){
+        assertThatRuntimeException().isThrownBy(() -> bankController.withdrawal(user1.getAccountNumber(),userTest));
     }
 }
