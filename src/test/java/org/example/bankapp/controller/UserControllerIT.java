@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
+import java.util.Objects;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -49,6 +51,14 @@ class UserControllerIT {
     void get_Transactions_not_found() {
         ResponseEntity<List<TransactionsBank>> getUser = userController.getTransactions(99);
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    void username_available(){
+        user.setUsername("Amir");
+        ResponseEntity<User> userResponseEntity = userController.register(user);
+        assertThat(userResponseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(Objects.requireNonNull(userResponseEntity.getBody()).getUsername()).isEqualTo("Amir Are Available !!!");
     }
 
     @Test
