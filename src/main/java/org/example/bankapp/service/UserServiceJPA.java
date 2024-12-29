@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.example.bankapp.model.User;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +23,12 @@ public class UserServiceJPA implements UserService {
 
     @Override
     public User save(User user) {
+        List<User> users = userRepository.findAll();
+        for (User u : users) {
+            if(u.getUsername().equals(user.getUsername())) {
+                throw  new IllegalArgumentException("Username already exists");
+            }
+        }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setAccountNumber(UUID.randomUUID());
         return userRepository.save(user);

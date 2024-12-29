@@ -29,14 +29,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
-        List<User> all = userRepository.findAll();
-        userRepository.findByUsername(user.getUsername());
-        for (User u : all) {
-            if(u.getUsername().equals(user.getUsername())) {
-                return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        User.builder().username(user.getUsername() + " Are Available !!!").build());
-            }
-        }
         User save = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
