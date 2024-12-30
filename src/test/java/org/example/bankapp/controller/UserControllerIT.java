@@ -1,6 +1,5 @@
 package org.example.bankapp.controller;
 
-import org.assertj.core.api.ThrowableAssert;
 import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
@@ -17,9 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThatRuntimeException;
 
 @SpringBootTest
 class UserControllerIT {
