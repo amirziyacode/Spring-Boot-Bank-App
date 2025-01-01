@@ -81,3 +81,70 @@ This table stores information about users in the banking application. It include
 - Login credentials (`username`, `password`).
 - Account balance (`amount`).
 - Unique identifiers (`id`, `accountNumber`).
+
+## Table Name: `Transaction`
+
+This table represents bank transaction records, capturing information about transactions including the method used, sender and receiver account numbers, transaction amount, creation date, and associated user.
+
+### Columns:
+
+1. **id**
+   - **Type**: `Long`
+   - **Description**: Unique identifier for each transaction.
+   - **Constraints**: Primary key, Auto-generated.
+   - **Annotations**: `@Id`, `@GeneratedValue(strategy = GenerationType.IDENTITY)`
+
+2. **methodName**
+   - **Type**: `String`
+   - **Description**: The name of the transaction method used (e.g., "Wire Transfer", "ACH").
+   - **Constraints**: Not null (assuming the method is always required).
+
+3. **accountNumberTo**
+   - **Type**: `UUID`
+   - **Description**: The recipient’s account number for the transaction.
+   - **Constraints**: Not null (assuming every transaction must have a recipient).
+
+4. **accountNumberFrom**
+   - **Type**: `UUID`
+   - **Description**: The sender’s account number for the transaction.
+   - **Constraints**: Not null (assuming every transaction must have a sender).
+
+5. **amount**
+   - **Type**: `double`
+   - **Description**: The monetary amount of the transaction.
+   - **Constraints**: Not null (assuming every transaction has an amount).
+
+6. **createdDate**
+   - **Type**: `LocalDateTime`
+   - **Description**: The timestamp indicating when the transaction was created.
+   - **Constraints**: Automatically generated on creation.
+   - **Annotations**: `@CreationTimestamp`
+
+7. **userId**
+   - **Type**: `Integer`
+   - **Description**: The identifier for the user initiating the transaction.
+   - **Constraints**: Not null (assuming every transaction is associated with a user).
+  
+ ## Entity Definition (Java) 
+ 
+ ```java
+@Entity(name = "Transaction")
+public class TransactionsBank {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String methodName;
+
+    private UUID accountNumberTo;
+
+    private UUID accountNumberFrom;
+
+    private double amount;
+
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    private Integer userId;
+}
+```
