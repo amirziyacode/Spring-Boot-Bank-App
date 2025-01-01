@@ -1,6 +1,7 @@
 package org.example.bankapp.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bankapp.model.TransactionsBank;
@@ -28,7 +29,7 @@ public class UserController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder  = new BCryptPasswordEncoder();
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<User> register(@RequestBody @Valid User user) {
         User save = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
