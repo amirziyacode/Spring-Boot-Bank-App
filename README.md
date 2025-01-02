@@ -11,6 +11,12 @@
   username = Admin
   password = 1234
   ```
+## Open API
+
+
+
+
+https://github.com/user-attachments/assets/ca7e7f66-d0b6-4350-bade-820667ff71b8
 
 
 
