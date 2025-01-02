@@ -3,6 +3,19 @@
 [![GitHub stars](https://img.shields.io/github/stars/iampawan/FlutterExampleApps.svg?style=social&label=Star)](https://github.com/amirziyacode)
 [![GitHub forks](https://img.shields.io/github/forks/iampawan/FlutterExampleApps.svg?style=social&label=Fork)](https://github.com/amirziyacode?tab=repositories)
 
+# API Documantaions
+  
+  Run Project and See it in  http://localhost:8080/swagger-ui/index.html 
+  
+  ```Text
+  username = Admin
+  password = 1234
+  ```
+
+
+
+
+
 
 # BankUser Table
 
