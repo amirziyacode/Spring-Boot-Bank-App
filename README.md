@@ -3,7 +3,34 @@
 [![GitHub stars](https://img.shields.io/github/stars/iampawan/FlutterExampleApps.svg?style=social&label=Star)](https://github.com/amirziyacode)
 [![GitHub forks](https://img.shields.io/github/forks/iampawan/FlutterExampleApps.svg?style=social&label=Fork)](https://github.com/amirziyacode?tab=repositories)
 
-# API Documantaions
+## Steps to Setup
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/amirziyacode/SpringBoot-Web-Todo-App.git
+```
+
+**2. Configure PostgreSQL**
+
+First, create a database named `postgres_demo`. Then, open `src/main/resources/application.properties` file and change the spring datasource username and password as per your PostgreSQL installation.
+
+**3. Run the app**
+
+Type the following command from the root directory of the project to run it -
+
+```bash
+mvn spring-boot:run
+```
+
+Alternatively, you can package the application in the form of a JAR file and then run it like so -
+
+```bash
+mvn clean package
+java -jar target/postgres-demo-0.0.1-SNAPSHOT.jar
+```
+
+## API Documantaions
   
   Run Project and See it in  http://localhost:8080/swagger-ui/index.html 
   
@@ -167,3 +194,10 @@ public class TransactionsBank {
     private Integer userId;
 }
 ```
+
+## Tests
+![Capture](https://github.com/user-attachments/assets/f5aac259-ddb5-40a7-9618-d9c80dc74532)
+
+
+  
+
