@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("user/forgetPassword/{id}")
-    public ResponseEntity<User> forgetPassword(@RequestBody UserPassword user, @PathVariable Integer id) {
+    public ResponseEntity<User> forgetPassword(@RequestBody @Valid UserPassword user, @PathVariable Integer id) {
         Optional<User> userId = userRepository.findById(id);
         if(bCryptPasswordEncoder.matches(user.getOldPassword(),userId.get().getPassword()) && user.getNewPassword().equals( user.getConfirmPassword())) {
             userService.forgetPassword(id,user);
