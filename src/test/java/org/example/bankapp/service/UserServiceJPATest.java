@@ -69,8 +69,9 @@ class UserServiceJPATest {
     void save_user()throws Exception {
         given(userService.save(any(User.class))).willReturn(new User());
         mockMvc.perform(post("/register")
-                        .content("{\"username\": \"test\", \"password\": \"test\"}")
-                        .content(objectMapper.writeValueAsString(new User()))
+                        .content(objectMapper.writeValueAsString(User.builder()
+                                .username("Test")
+                                .password("Test").build()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }

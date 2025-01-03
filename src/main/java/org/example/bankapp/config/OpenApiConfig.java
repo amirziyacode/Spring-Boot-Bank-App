@@ -27,5 +27,5 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
         in = SecuritySchemeIn.HEADER,
         description = "Basic Authentication using username and password"
 )
-public class OpenConfig {
+public class OpenApiConfig {
 }
