@@ -14,7 +14,6 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class SpringBoot implements CommandLineRunner {
-
     private  final BCryptPasswordEncoder bCryptPasswordEncoder  = new BCryptPasswordEncoder();
 
     UserRepository userRepository;

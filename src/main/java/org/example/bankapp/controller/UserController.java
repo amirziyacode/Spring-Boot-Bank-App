@@ -35,13 +35,8 @@ public class UserController {
     }
 
     @PostMapping("user/forgetPassword/{id}")
-    public ResponseEntity<User> forgetPassword(@RequestBody @Valid UserPassword user, @PathVariable Integer id) {
-        Optional<User> userId = userRepository.findById(id);
-        if(bCryptPasswordEncoder.matches(user.getOldPassword(),userId.get().getPassword()) && user.getNewPassword().equals( user.getConfirmPassword())) {
-            userService.forgetPassword(id,user);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(userId.get());
-        }
-        return  ResponseEntity.status(HttpStatus.FORBIDDEN).body(userId.get());
+    public ResponseEntity<UserPassword> forgetPassword(@RequestBody @Valid UserPassword user, @PathVariable Integer id) {
+        return  ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
     }
 
     @GetMapping("/transactions/{id}")
