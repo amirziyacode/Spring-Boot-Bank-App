@@ -35,7 +35,8 @@ public class UserController {
     }
 
     @PostMapping("user/forgetPassword/{id}")
-    public ResponseEntity<UserPassword> forgetPassword(@RequestBody @Valid UserPassword user, @PathVariable Integer id) {
+    public ResponseEntity<UserPassword> forgetPassword(@PathVariable Integer id,@RequestBody @Valid UserPassword user) {
+        userService.forgetPassword(id, user);
         return  ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
     }
 

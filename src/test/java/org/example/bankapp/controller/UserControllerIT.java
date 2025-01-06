@@ -83,16 +83,14 @@ class UserControllerIT {
     void forgotPassword_user() {
         UserPassword userPassword = UserPassword.builder().oldPassword("1234").newPassword("7777").confirmPassword("7777").build();
 
-        ResponseEntity<UserPassword> getUser = userController.forgetPassword(userPassword,user.getId());
+        ResponseEntity<UserPassword> getUser = userController.forgetPassword(user.getId(),userPassword);
         assertThat(getUser).isNotNull();
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
     }
 
     @Test
-    void forget_Password_user_not_Accepted() {
+    void forget_Password_user_not_confirmed() {
         UserPassword userPassword = UserPassword.builder().oldPassword("1111").newPassword("7777").confirmPassword("7777").build();
-        ResponseEntity<UserPassword> getUser = userController.forgetPassword(userPassword,user.getId());
-        assertThat(getUser).isNotNull();
-        assertThatIllegalArgumentException().isThrownBy(() -> userController.forgetPassword(userPassword,user.getId()));
+        assertThatIllegalArgumentException().isThrownBy(() -> userController.forgetPassword(user.getId(),userPassword));
     }
 }
