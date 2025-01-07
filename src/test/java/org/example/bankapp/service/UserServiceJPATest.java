@@ -5,7 +5,6 @@ import org.example.bankapp.controller.UserController;
 import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.TransactionsBankRepo;
-import org.example.bankapp.repo.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +32,6 @@ class UserServiceJPATest {
 
     @MockBean
     private UserService userService;
-
-    @MockBean
-    private UserRepository userRepository;
 
     @MockBean
     private TransactionsBankRepo transactionsBankRepo;
