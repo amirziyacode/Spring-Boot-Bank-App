@@ -23,13 +23,13 @@ public class UserController {
     private final TransactionsBankRepo transactionsBankRepo;
 
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<User> register(@RequestBody @Valid User user) {
         User save = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
-    @PostMapping("user/forgetPassword/{id}")
+    @PostMapping("auth/user/forgetPassword/{id}")
     public ResponseEntity<UserPassword> forgetPassword(@PathVariable Integer id,@RequestBody @Valid UserPassword user) {
         userService.forgetPassword(id, user);
         return  ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
