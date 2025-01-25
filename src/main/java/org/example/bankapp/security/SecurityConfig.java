@@ -38,11 +38,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(aut -> aut
-                        .requestMatchers("/register","/login").permitAll()
+                        .requestMatchers("/auth/register","/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
-                .exceptionHandling(ex -> ex.accessDeniedHandler(new CustomAccessDeniedHandler()))
+                .exceptionHandling(ex -> ex.accessDeniedHandler(new CustomAccessDeniedHandler()).accessDeniedPage("/auth/login"))
                 .build();
     }
     @Bean
