@@ -15,33 +15,34 @@ import java.util.UUID;
 
 
 @RestController
+@RequestMapping("/bank")
 @RequiredArgsConstructor
 public class BankController {
 
     private final BankService bankService;
     private final TransactionsBankRepo transactionsBankRepo;
 
-    @GetMapping("/bank/balance/{bankId}")
+    @GetMapping("balance/{bankId}")
     public ResponseEntity<Double> getBalance(@PathVariable("bankId") UUID bankId) {
         return ResponseEntity.status(HttpStatus.OK).body(bankService.viewBalance(bankId));
     }
 
-    @PostMapping("/bank/withdrawal/{bankId}")
+    @PostMapping("withdrawal/{bankId}")
     public ResponseEntity<User> withdrawal(@PathVariable("bankId") UUID bankId, @RequestBody User user) {
         return  ResponseEntity.ok().body(bankService.withdraw(bankId,user.getAmount()));
     }
 
-    @PostMapping("/bank/deposit/{bankId}")
+    @PostMapping("deposit/{bankId}")
     public ResponseEntity<User> deposit(@PathVariable("bankId") UUID bankId, @RequestBody User user) {
         return  ResponseEntity.ok().body(bankService.deposit(bankId,user.getAmount()));
     }
 
-    @PostMapping("/bank/transfer/{bankId}")
+    @PostMapping("transfer/{bankId}")
     public ResponseEntity<User> transfer(@PathVariable("bankId") UUID bankId, @RequestBody User user) {
         return  ResponseEntity.ok().body(bankService.transfer(bankId,user.getAccountNumber(),user.getAmount()));
     }
 
-    @GetMapping("/transactions/{id}")
+    @GetMapping("transactions/{id}")
     public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
         List<TransactionsBank> trx = transactionsBankRepo.findByUserId(id);
         if(!(trx.isEmpty()) ) {

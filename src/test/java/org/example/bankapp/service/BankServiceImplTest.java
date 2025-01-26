@@ -62,7 +62,7 @@ class BankServiceImplTest {
     @Test
     void get_transactions_bank_not_Found()throws Exception {
         given(transactionsBankRepo.findByUserId(any(Integer.class))).willReturn(new ArrayList<>());
-        mockMvc.perform(get("/transactions/{id}",bankServiceImpl.user.getId())
+        mockMvc.perform(get("/bank/transactions/{id}",bankServiceImpl.user.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -102,7 +102,7 @@ class BankServiceImplTest {
     @Test
     void get_transactions_bank()throws Exception {
         given(transactionsBankRepo.findByUserId(bankServiceImpl.user.getId())).willReturn(List.of(transactionsBank));
-        mockMvc.perform(get("/transactions/{id}",bankServiceImpl.user.getId())
+        mockMvc.perform(get("/bank/transactions/{id}",bankServiceImpl.user.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
