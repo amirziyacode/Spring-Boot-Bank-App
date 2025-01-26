@@ -31,4 +31,10 @@ public class UserController {
         userService.forgetPassword(id, user);
         return  ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody @Valid User user) {
+        userService.loadUser(user.getUsername(), user.getPassword());
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 }

@@ -7,4 +7,5 @@ import org.example.bankapp.model.UserPassword;
 public interface UserService {
     User save(User user);
     void forgetPassword(Integer id, UserPassword user);
+    User loadUser(String username, String password);
 }

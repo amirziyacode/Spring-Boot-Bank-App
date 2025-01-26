@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .sessionManagement(ss -> ss.invalidSessionUrl("/invalidSession").maximumSessions(3).maxSessionsPreventsLogin(true))
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(aut -> aut
-                        .requestMatchers("/register","/login","/invalidSession").permitAll()
+                        .requestMatchers("auth/register","auth/login","/invalidSession").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

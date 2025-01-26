@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.example.bankapp.model.User;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,5 +42,15 @@ public class UserServiceJPA implements UserService {
         }
         userId.get().setPassword(bCryptPasswordEncoder.encode(user.getNewPassword()));
         userRepository.save(userId.get());
+    }
+
+    @Override
+    public User loadUser(String username, String password) {
+        User getUser = userRepository.findByUsername(username);
+        boolean isPasswordCorrect = bCryptPasswordEncoder.matches(password, getUser.getPassword());
+        if(isPasswordCorrect) {
+            return getUser;
+        }
+        throw  new IllegalArgumentException("Username or password is incorrect !!");
     }
 }
