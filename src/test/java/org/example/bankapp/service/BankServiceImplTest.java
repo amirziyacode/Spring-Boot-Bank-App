@@ -12,7 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyDouble;
@@ -39,10 +42,12 @@ class BankServiceImplTest {
 
 
     private BankServiceImpl bankServiceImpl;
+    private  TransactionsBank transactionsBank;
 
     @BeforeEach
     void setUp() {
         bankServiceImpl = new BankServiceImpl();
+       transactionsBank = TransactionsBank.builder().userId(1).methodName("ViewBalance").createdDate(LocalDateTime.now()).build();
     }
 
     @Test
@@ -96,7 +101,7 @@ class BankServiceImplTest {
 
     @Test
     void get_transactions_bank()throws Exception {
-        given(transactionsBankRepo.findByUserId(bankServiceImpl.user.getId())).willReturn(new ArrayList<>());
+        given(transactionsBankRepo.findByUserId(bankServiceImpl.user.getId())).willReturn(List.of(transactionsBank));
         mockMvc.perform(get("/transactions/{id}",bankServiceImpl.user.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

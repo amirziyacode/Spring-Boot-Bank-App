@@ -41,8 +41,6 @@ public class BankServiceImpl implements BankService {
 
         userMap.put(userId,user);
         userMap.put(userId1,user1);
-        TransactionsBank transactionsBank = TransactionsBank.builder().userId(1).methodName("ViewBalance").createdDate(LocalDateTime.now()).build();
-        transactionsBankMap.get().put(user.getId(),transactionsBank);
     }
 
     @Override
