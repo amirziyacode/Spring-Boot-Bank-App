@@ -1,6 +1,7 @@
 package org.example.bankapp.controller;
 
 import jakarta.transaction.Transactional;
+import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -86,6 +89,22 @@ class BankControllerIT {
         assertThat(Objects.requireNonNull(transferJson.getBody()).getAmount()).isEqualTo(995000);
         assertThat(user1.getAmount()).isEqualTo(5500.0);
 
+    }
+
+
+    @Test
+    void get_Transactions_not_found() {
+        ResponseEntity<List<TransactionsBank>> getUser = bankController.getTransactions(99);
+        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Rollback
+    @org.springframework.transaction.annotation.Transactional
+    void get_Transactions() {
+        bankController.getBalance(user.getAccountNumber()); // for add a Transactions !!!
+        ResponseEntity<List<TransactionsBank>> getTrx = bankController.getTransactions(user.getId());
+        assertThat(getTrx.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test

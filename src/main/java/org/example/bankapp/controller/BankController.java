@@ -2,11 +2,15 @@ package org.example.bankapp.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
+import org.example.bankapp.repo.TransactionsBankRepo;
 import org.example.bankapp.service.BankService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.UUID;
 
 
@@ -15,6 +19,7 @@ import java.util.UUID;
 public class BankController {
 
     private final BankService bankService;
+    private final TransactionsBankRepo transactionsBankRepo;
 
     @GetMapping("/bank/balance/{bankId}")
     public ResponseEntity<Double> getBalance(@PathVariable("bankId") UUID bankId) {
@@ -34,6 +39,15 @@ public class BankController {
     @PostMapping("/bank/transfer/{bankId}")
     public ResponseEntity<User> transfer(@PathVariable("bankId") UUID bankId, @RequestBody User user) {
         return  ResponseEntity.ok().body(bankService.transfer(bankId,user.getAccountNumber(),user.getAmount()));
+    }
+
+    @GetMapping("/transactions/{id}")
+    public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
+        List<TransactionsBank> trx = transactionsBankRepo.findByUserId(id);
+        if(!(trx.isEmpty()) ) {
+            return ResponseEntity.status(HttpStatus.OK).body(trx);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
 }

@@ -20,7 +20,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final TransactionsBankRepo transactionsBankRepo;
 
 
     @PostMapping("/auth/register")
@@ -33,14 +32,5 @@ public class UserController {
     public ResponseEntity<UserPassword> forgetPassword(@PathVariable Integer id,@RequestBody @Valid UserPassword user) {
         userService.forgetPassword(id, user);
         return  ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
-    }
-
-    @GetMapping("/transactions/{id}")
-    public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
-        List<TransactionsBank> trx = transactionsBankRepo.findByUserId(id);
-        if(!(trx.isEmpty()) ) {
-            return ResponseEntity.status(HttpStatus.OK).body(trx);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 }
