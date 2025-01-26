@@ -36,9 +36,10 @@ public class SecurityConfig {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(ss -> ss.invalidSessionUrl("/invalidSession").maximumSessions(3).maxSessionsPreventsLogin(true))
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(aut -> aut
-                        .requestMatchers("/auth/register","/auth/login").permitAll()
+                        .requestMatchers("/auth/register","/auth/login","/invalidSession").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
