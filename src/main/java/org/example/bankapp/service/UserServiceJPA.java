@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.UserRepository;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.example.bankapp.model.User;
@@ -37,13 +35,13 @@ public class UserServiceJPA implements UserService {
     }
 
     @Override
-    public User forgetPassword(Integer id, UserPassword user) {
+    public void forgetPassword(Integer id, UserPassword user) {
         Optional<User> userId = userRepository.findById(id);
         boolean checkPassword = bCryptPasswordEncoder.matches(user.getOldPassword(),userId.get().getPassword());
         if(!checkPassword) {
             throw  new IllegalArgumentException("Password does not match");
         }
         userId.get().setPassword(bCryptPasswordEncoder.encode(user.getNewPassword()));
-        return userRepository.save(userId.get());
+        userRepository.save(userId.get());
     }
 }

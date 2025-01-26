@@ -6,5 +6,5 @@ import org.example.bankapp.model.UserPassword;
 
 public interface UserService {
     User save(User user);
-    User forgetPassword(Integer id, UserPassword user);
+    void forgetPassword(Integer id, UserPassword user);
 }
