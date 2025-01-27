@@ -4,6 +4,7 @@ package org.example.bankapp.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.bankapp.model.MassageResponse;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.service.UserService;
@@ -33,8 +34,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody @Valid User user) {
+    public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user) {
         userService.loadUser(user.getUsername(), user.getPassword());
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Successfully !"));
     }
 }
