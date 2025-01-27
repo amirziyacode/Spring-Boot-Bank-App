@@ -22,9 +22,9 @@ public class UserController {
 
 
     @PostMapping("register")
-    public ResponseEntity<User> register(@RequestBody @Valid User user) {
+    public ResponseEntity<MassageResponse> register(@RequestBody @Valid User user) {
         User save = userService.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(save);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new MassageResponse("Registering Was Successfully !"));
     }
 
     @PostMapping("forgetPassword/{id}")
@@ -36,6 +36,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user) {
         userService.loadUser(user.getUsername(), user.getPassword());
-        return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Successfully !"));
+        return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Was Successfully !"));
     }
 }
