@@ -20,6 +20,7 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:3000") // port react App !!
 public class UserController {
 
     private final UserService userService;
@@ -40,12 +41,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user, HttpServletResponse response) {
        boolean isAuthentication =  userService.loadUser(user.getUsername(), user.getPassword());
+        System.out.println("Authentication: " + isAuthentication);
        if(isAuthentication) {
            Cookie authCookie = new Cookie("authToken",  UUID.randomUUID().toString());
            authCookie.setHttpOnly(true);
            authCookie.setSecure(true);
            authCookie.setPath("/");
-           authCookie.setMaxAge(600);
+           authCookie.setMaxAge(600); // 10 min
            response.addCookie(authCookie);
            return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Was Successfully !"));
        }
