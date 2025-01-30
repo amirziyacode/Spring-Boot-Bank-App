@@ -1,8 +1,7 @@
 package org.example.bankapp.controller;
 
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +12,6 @@ import org.example.bankapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
-
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -39,18 +35,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user, HttpServletResponse response) {
+    public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user,HttpSession session) {
        boolean isAuthentication =  userService.loadUser(user.getUsername(), user.getPassword());
-        System.out.println("Authentication: " + isAuthentication);
        if(isAuthentication) {
-           Cookie authCookie = new Cookie("authToken",  UUID.randomUUID().toString());
-           authCookie.setHttpOnly(true);
-           authCookie.setSecure(true);
-           authCookie.setPath("/");
-           authCookie.setMaxAge(600); // 10 min
-           response.addCookie(authCookie);
+           session.setAttribute("username", user.getUsername());
            return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Was Successfully !"));
        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MassageResponse("Invalid username or password!"));
+    }
+
+    @GetMapping("/user")
+    public String getUser(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        return "Logged in as: " + (username != null ? username : "Guest");
     }
 }
