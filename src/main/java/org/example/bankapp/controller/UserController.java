@@ -47,6 +47,6 @@ public class UserController {
     @GetMapping("/user")
     public String getUser(HttpSession session) {
         String username = (String) session.getAttribute("username");
-        return "Logged in as: " + (username != null ? username : "Guest");
+        return username != null ? username : "Guest";
     }
 }
