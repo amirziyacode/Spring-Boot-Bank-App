@@ -45,12 +45,12 @@ public class UserServiceJPA implements UserService {
     }
 
     @Override
-    public User loadUser(String username, String password) {
+    public Boolean loadUser(String username, String password) {
         User getUser = userRepository.findByUsername(username);
         boolean isPasswordCorrect = bCryptPasswordEncoder.matches(password, getUser.getPassword());
         if(isPasswordCorrect) {
-            return getUser;
+            return true;
         }
-        throw  new IllegalArgumentException("Username or password is incorrect !!");
+        return false;
     }
 }

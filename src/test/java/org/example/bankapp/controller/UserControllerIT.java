@@ -1,5 +1,6 @@
 package org.example.bankapp.controller;
 
+import org.example.bankapp.model.MassageResponse;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.UserRepository;
@@ -53,11 +54,10 @@ class UserControllerIT {
                 .username("Test")
                 .password("1234")
                 .build();
-        ResponseEntity<User> getUser = userController.register(user1);
+        ResponseEntity<MassageResponse> getUser = userController.register(user1);
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(getUser.getBody()).isNotNull();
-        assertThat(getUser.getBody().getUsername()).isEqualTo(user1.getUsername());
-        assertThat(getUser.getBody().getPassword()).isEqualTo(user1.getPassword());
+        assertThat(getUser.getBody().getMessage()).isEqualTo("Registering Was Successfully !");
     }
 
     @Test

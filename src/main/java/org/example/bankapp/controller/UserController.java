@@ -1,6 +1,8 @@
 package org.example.bankapp.controller;
 
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,8 @@ import org.example.bankapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -23,7 +27,7 @@ public class UserController {
 
     @PostMapping("register")
     public ResponseEntity<MassageResponse> register(@RequestBody @Valid User user) {
-        User save = userService.save(user);
+        userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(new MassageResponse("Registering Was Successfully !"));
     }
 
@@ -34,8 +38,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user) {
-        userService.loadUser(user.getUsername(), user.getPassword());
-        return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Was Successfully !"));
+    public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user, HttpServletResponse response) {
+       boolean isAuthentication =  userService.loadUser(user.getUsername(), user.getPassword());
+       if(isAuthentication) {
+           Cookie authCookie = new Cookie("authToken",  UUID.randomUUID().toString());
+           authCookie.setHttpOnly(true);
+           authCookie.setSecure(true);
+           authCookie.setPath("/");
+           authCookie.setMaxAge(600);
+           response.addCookie(authCookie);
+           return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Was Successfully !"));
+       }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MassageResponse("Invalid username or password!"));
     }
 }
