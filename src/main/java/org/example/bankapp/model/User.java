@@ -25,7 +25,6 @@ public class User {
     private String username;
     @NotBlank(message = "Password Should Not Be Blank !!")
     @NotNull
-    @JsonIgnore
     private String password;
     private double amount;
     private UUID accountNumber;

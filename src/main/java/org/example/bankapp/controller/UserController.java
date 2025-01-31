@@ -1,7 +1,6 @@
 package org.example.bankapp.controller;
 
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,19 +35,17 @@ public class UserController {
         return  ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user,HttpSession session) {
+    @PostMapping("login")
+    public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user) {
        boolean isAuthentication =  userService.loadUser(user.getUsername(), user.getPassword());
        if(isAuthentication) {
-           session.setAttribute("username", user.getUsername());
            return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Was Successfully !"));
        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MassageResponse("Invalid username or password!"));
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<User> getUser(@RequestParam String userName,HttpSession session) {
-        session.getAttribute("username");
+    @GetMapping("user")
+    public ResponseEntity<User> getUser(@RequestParam String userName) {
         if(userRepository.findByUsername(userName) != null) {
             return ResponseEntity.status(HttpStatus.OK).body(userRepository.findByUsername(userName));
         }
