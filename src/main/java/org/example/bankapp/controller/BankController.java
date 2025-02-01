@@ -2,6 +2,7 @@ package org.example.bankapp.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.TransactionsBankRepo;
@@ -9,7 +10,6 @@ import org.example.bankapp.service.BankService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/bank")
 @RequiredArgsConstructor
+@Slf4j
 @CrossOrigin(origins = "http://localhost:5173") // port react App !!
 public class BankController {
 
