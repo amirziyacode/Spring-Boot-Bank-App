@@ -17,6 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/bank")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173") // port react App !!
 public class BankController {
 
     private final BankService bankService;
@@ -45,10 +46,7 @@ public class BankController {
     @GetMapping("transactions/{id}")
     public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
         List<TransactionsBank> trx = transactionsBankRepo.findByUserId(id);
-        if(!(trx.isEmpty()) ) {
-            return ResponseEntity.status(HttpStatus.OK).body(trx);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(trx);
     }
 
 }
