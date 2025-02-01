@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000") // port react App !!
+@CrossOrigin(origins = "http://localhost:5173") // port react App !!
 public class UserController {
 
     private final UserService userService;
