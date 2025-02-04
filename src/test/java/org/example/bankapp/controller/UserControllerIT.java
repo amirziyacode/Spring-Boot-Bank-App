@@ -26,8 +26,7 @@ class UserControllerIT {
     @Autowired
     UserRepository userRepository;
 
-    User user;
-
+    User user,user1;
     @Autowired
     WebApplicationContext webApplicationContext;
 
@@ -73,5 +72,20 @@ class UserControllerIT {
     void forget_Password_user_not_confirmed() {
         UserPassword userPassword = UserPassword.builder().oldPassword("1111").newPassword("7777").confirmPassword("7777").build();
         assertThatIllegalArgumentException().isThrownBy(() -> userController.forgetPassword(user.getId(),userPassword));
+    }
+
+    @Test
+    void login_successfully() {
+        User  mockUser = User.builder().username("Amir").password("Java").build();
+        ResponseEntity<MassageResponse> login = userController.login(mockUser);
+        assertThat(login.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    void login_unSuccessfully() {
+        ResponseEntity<MassageResponse> login = userController.login(user);
+        assertThat(login.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(login.getBody()).isEqualTo(new MassageResponse("Invalid username or password!"));
+
     }
 }

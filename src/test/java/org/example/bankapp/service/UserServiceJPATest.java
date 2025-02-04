@@ -2,7 +2,9 @@ package org.example.bankapp.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.bankapp.controller.UserController;
+import org.example.bankapp.model.MassageResponse;
 import org.example.bankapp.model.User;
+import org.example.bankapp.repo.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -24,6 +26,9 @@ class UserServiceJPATest {
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private UserRepository userRepository;
+
 
     @Autowired
     ObjectMapper objectMapper;
@@ -37,5 +42,21 @@ class UserServiceJPATest {
                                 .password("Test").build()))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void login_user()throws Exception {
+        mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                "{" +
+                                        "\"username\":\""+"Amir"+"\""+","+
+                                        "\"password\":\"Java\"" +
+                                        "}"
+                        )
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+
     }
 }
