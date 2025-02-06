@@ -47,10 +47,6 @@ public class UserServiceJPA implements UserService {
     @Override
     public Boolean loadUser(String username, String password) {
         User getUser = userRepository.findByUsername(username);
-        boolean isPasswordCorrect = bCryptPasswordEncoder.matches(password, getUser.getPassword());
-        if(isPasswordCorrect) {
-            return true;
-        }
-        return false;
+        return bCryptPasswordEncoder.matches(password, getUser.getPassword());
     }
 }

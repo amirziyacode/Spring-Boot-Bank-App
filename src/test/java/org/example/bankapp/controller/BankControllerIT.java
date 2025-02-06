@@ -51,7 +51,7 @@ class BankControllerIT {
     @Test
     void check_view_Balance(){
         ResponseEntity<Double> balanceJson = bankController.getBalance(user.getAccountNumber());
-        assertThat(balanceJson.getBody()).isEqualTo(1000000.0);
+        assertThat(balanceJson.getBody()).isEqualTo(10000.0);
         assertThat(balanceJson.getStatusCode()).isEqualTo(HttpStatus.OK);
 
     }
@@ -60,11 +60,19 @@ class BankControllerIT {
     @Rollback
     @Transactional
     void check_withdrawal_Account_Balance(){
-        User userTest = User.builder().amount(100000.0).build();
+        User userTest = User.builder().amount(100.0).build();
         ResponseEntity<User> withdrawalJson = bankController.withdrawal(user.getAccountNumber(),userTest);
         assertThat(withdrawalJson.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(withdrawalJson.getBody()).isEqualTo(user);
-        assertThat(Objects.requireNonNull(withdrawalJson.getBody()).getAmount()).isEqualTo(900000.0);
+        assertThat(Objects.requireNonNull(withdrawalJson.getBody()).getAmount()).isEqualTo(9900.0);
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    void check_withdrawal_not_Enough_Balance(){
+        User userTest = User.builder().amount(100000.0).build();
+        assertThatRuntimeException().isThrownBy(() -> bankController.withdrawal(user.getAccountNumber(),userTest));
     }
 
     @Test
@@ -75,7 +83,7 @@ class BankControllerIT {
         ResponseEntity<User> depositJson = bankController.deposit(user.getAccountNumber(),userTest);
         assertThat(depositJson.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(depositJson.getBody()).isEqualTo(user);
-        assertThat(Objects.requireNonNull(depositJson.getBody()).getAmount()).isEqualTo(1100000.0);
+        assertThat(Objects.requireNonNull(depositJson.getBody()).getAmount()).isEqualTo(110000.0);
     }
     @Test
     @Transactional
@@ -86,7 +94,7 @@ class BankControllerIT {
         ResponseEntity<User> transferJson = bankController.transfer(user.getAccountNumber(),userTest);
         assertThat(transferJson.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(transferJson.getBody()).isEqualTo(user);
-        assertThat(Objects.requireNonNull(transferJson.getBody()).getAmount()).isEqualTo(995000);
+        assertThat(Objects.requireNonNull(transferJson.getBody()).getAmount()).isEqualTo(5000.0);
         assertThat(user1.getAmount()).isEqualTo(5500.0);
 
     }
