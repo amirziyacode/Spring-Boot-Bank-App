@@ -26,7 +26,7 @@ class UserControllerIT {
     @Autowired
     UserRepository userRepository;
 
-    User user,user1;
+    User user;
     @Autowired
     WebApplicationContext webApplicationContext;
 
@@ -87,5 +87,18 @@ class UserControllerIT {
         assertThat(login.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         assertThat(login.getBody()).isEqualTo(new MassageResponse("Invalid username or password!"));
 
+    }
+
+    @Test
+    void get_user() {
+        ResponseEntity<User> admin = userController.getUser("Amir");
+        assertThat(admin.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(admin.getBody()).isEqualTo(user);
+    }
+
+    @Test
+    void get_user_not_found() {
+        ResponseEntity<User> test = userController.getUser("Test");
+        assertThat(test.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

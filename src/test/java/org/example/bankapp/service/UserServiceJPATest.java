@@ -57,7 +57,6 @@ class UserServiceJPATest {
     }
 
     @Test
-    @Rollback
     void login_user()throws Exception {
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
