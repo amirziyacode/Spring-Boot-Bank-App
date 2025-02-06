@@ -4,17 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.bankapp.controller.UserController;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -34,16 +33,7 @@ class UserServiceJPATest {
     @Autowired
     ObjectMapper objectMapper;
 
-    private User user;
 
-    @BeforeEach
-    void setUp() {
-            user = User.builder()
-                .username("Test")
-                .password("1234")
-                .build();
-        userRepository.save(user);
-    }
 
     @Test
     void save_user()throws Exception {
@@ -58,10 +48,19 @@ class UserServiceJPATest {
 
     @Test
     void login_user()throws Exception {
+        when(userService.loadUser("Amir","Java")).thenReturn(true);
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user))
-                        .content("{\"username\":\"Test\", \"password\":\"1234\"}"))
+                        .content("{\"username\":\"Amir\", \"password\":\"Java\"}"))
                 .andExpect(status().isOk());
+
+    }
+    @Test
+    void login_wrong_password()throws Exception {
+        when(userService.loadUser("Amir","wrongPassword")).thenReturn(false);
+        mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\":\"Amir\", \"password\":\"wrongPassword\"}"))
+                .andExpect(status().isUnauthorized());
     }
 }
