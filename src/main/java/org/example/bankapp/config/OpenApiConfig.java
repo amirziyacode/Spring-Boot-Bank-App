@@ -7,17 +7,18 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         info = @Info(
                 contact = @Contact(
                         name = "AmirZiya",
                         email = "amzdidi@gmail.com",
-                        url = "http://github.com/amirziyacode"
+                        url = "https://github.com/amirziyacode"
                 ),
                 title = "Open API",
                 description = "Open API Bank Application",
-                version = "1.0"
+                version = "1.2"
         )
 )
 @SecurityScheme(
@@ -27,5 +28,5 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
         in = SecuritySchemeIn.HEADER,
         description = "Basic Authentication using username and password"
 )
-public class OpenApiConfig {
-}
+@Configuration
+public class OpenApiConfig { }
