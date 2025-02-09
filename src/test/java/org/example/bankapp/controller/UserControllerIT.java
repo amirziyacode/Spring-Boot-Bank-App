@@ -91,14 +91,14 @@ class UserControllerIT {
 
     @Test
     void get_user() {
-        ResponseEntity<User> admin = userController.getUser("Amir");
+        ResponseEntity<Object> admin = userController.getUser("Amir");
         assertThat(admin.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(admin.getBody()).isEqualTo(user);
     }
 
     @Test
     void get_user_not_found() {
-        ResponseEntity<User> test = userController.getUser("Test");
+        ResponseEntity<Object> test = userController.getUser("Test");
         assertThat(test.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

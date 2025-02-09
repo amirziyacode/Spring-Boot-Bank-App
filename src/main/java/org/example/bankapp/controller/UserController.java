@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.bankapp.model.MassageResponse;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
-import org.example.bankapp.repo.UserRepository;
 import org.example.bankapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
 
     @PostMapping("register")
@@ -45,10 +43,11 @@ public class UserController {
     }
 
     @GetMapping("user")
-    public ResponseEntity<User> getUser(@RequestParam String userName) {
-        if(userRepository.findByUsername(userName) != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(userRepository.findByUsername(userName));
+    public ResponseEntity<Object> getUser(@RequestParam String userName) {
+        User getUser = userService.getUser(userName);
+        if(getUser != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(getUser);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found !!");
     }
 }

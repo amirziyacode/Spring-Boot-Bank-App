@@ -49,4 +49,12 @@ public class UserServiceJPA implements UserService {
         User getUser = userRepository.findByUsername(username);
         return bCryptPasswordEncoder.matches(password, getUser.getPassword());
     }
+
+    @Override
+    public User getUser(String username) {
+        if(userRepository.findByUsername(username) != null) {
+            return userRepository.findByUsername(username);
+        }
+        return null;
+    }
 }

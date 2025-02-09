@@ -3,14 +3,18 @@ package org.example.bankapp.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.bankapp.controller.UserController;
 import org.example.bankapp.model.User;
-import org.example.bankapp.repo.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.UUID;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -26,12 +30,24 @@ class UserServiceJPATest {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private UserRepository userRepository;
 
 
     @Autowired
     ObjectMapper objectMapper;
+
+
+    private User mocUser;
+
+    @BeforeEach
+    void setUp() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        mocUser = User.builder()
+                .accountNumber(UUID.randomUUID())
+                .username("Amir")
+                .password(bCryptPasswordEncoder.encode("Java"))
+                .amount(500.0)
+                .build();
+    }
 
 
 
@@ -62,5 +78,14 @@ class UserServiceJPATest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"Amir\", \"password\":\"wrongPassword\"}"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void get_user()throws Exception {
+        when(userService.getUser("Amir")).thenReturn(mocUser);
+        mockMvc.perform(get("/auth/user").param("userName","Amir")
+                .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(mocUser)))
+                .andExpect(status().isOk());
     }
 }

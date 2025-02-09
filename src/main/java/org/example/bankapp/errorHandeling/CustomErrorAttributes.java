@@ -4,7 +4,7 @@ import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.WebRequest;
-
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class CustomErrorAttributes  implements ErrorAttributes {
         Map <String, Object> errorAttributes = new HashMap<>();
         errorAttributes.put("status", 404);
         errorAttributes.put("message", "Page not found");
-        errorAttributes.put("timestamp", System.currentTimeMillis());
+        errorAttributes.put("timestamp", LocalDateTime.now());
         return errorAttributes;
     }
 

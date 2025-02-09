@@ -8,4 +8,5 @@ public interface UserService {
     User save(User user);
     void forgetPassword(Integer id, UserPassword user);
     Boolean loadUser(String username, String password);
+    User getUser(String username);
 }
