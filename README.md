@@ -196,7 +196,8 @@ public class TransactionsBank {
 ```
 
 ## Tests
-![30Tests](https://github.com/user-attachments/assets/e2b47b79-f812-4360-a8d2-ab7a19ee0067)
+![31-Tests](https://github.com/user-attachments/assets/b327d859-e500-410a-90cc-842e1c9bd88b)
+
 
 
 
