@@ -6,6 +6,7 @@ import org.example.bankapp.model.User;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -117,5 +118,10 @@ public class BankServiceImpl implements BankService {
         userTo.setAmount(userTo.getAmount() + amount);
         transactionsBankMap.get().put(userFrom.getId(), transactionsBank);
         return userFrom;
+    }
+
+    @Override
+    public List<TransactionsBank> viewTransactions(Integer accountId) {
+        return List.of();
     }
 }

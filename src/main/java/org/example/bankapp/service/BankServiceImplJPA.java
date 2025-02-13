@@ -7,6 +7,7 @@ import org.example.bankapp.repo.UserRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,6 +19,7 @@ public class BankServiceImplJPA implements BankService {
 
     final
     TransactionsBankRepo transactionsBankRepo;
+
 
     public BankServiceImplJPA(UserRepository userRepository, TransactionsBankRepo transactionsBankRepo) {
         this.userRepository = userRepository;
@@ -104,6 +106,19 @@ public class BankServiceImplJPA implements BankService {
             throw  new RuntimeException("Balance not enough");
         }
     }
+
+    @Override
+    public List<TransactionsBank> viewTransactions(Integer accountId) {
+        if(userRepository.findById(accountId).isEmpty()) {
+            throw  new RuntimeException("Account not found");
+        }
+        List<TransactionsBank> userTransaction = transactionsBankRepo.findByUserId(accountId);
+        if(userTransaction.isEmpty()) {
+            throw  new RuntimeException("User have no transactions !!");
+        }
+        return userTransaction;
+    }
+
     private boolean checkBalance(UUID accountId, Double amount) {
         return userRepository.findByAccountNumber(accountId).getAmount() >= amount;
     }

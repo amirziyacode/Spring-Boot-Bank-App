@@ -3,6 +3,7 @@ package org.example.bankapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.bankapp.errorHandeling.ErrorControllerHanling;
 import org.example.bankapp.model.TransactionsBank;
 import org.example.bankapp.model.User;
 import org.example.bankapp.repo.TransactionsBankRepo;
@@ -22,7 +23,6 @@ import java.util.UUID;
 public class BankController {
 
     private final BankService bankService;
-    private final TransactionsBankRepo transactionsBankRepo;
 
     @GetMapping("balance/{bankId}")
     public ResponseEntity<Double> getBalance(@PathVariable("bankId") UUID bankId) {
@@ -46,11 +46,7 @@ public class BankController {
 
     @GetMapping("transactions/{id}")
     public ResponseEntity<List<TransactionsBank>> getTransactions(@PathVariable Integer id){
-        List<TransactionsBank> trx = transactionsBankRepo.findByUserId(id);
-        if(trx.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(trx);
+        return ResponseEntity.status(HttpStatus.OK).body(bankService.viewTransactions(id));
     }
 
 }
