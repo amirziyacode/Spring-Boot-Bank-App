@@ -14,7 +14,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -102,8 +101,7 @@ class BankControllerIT {
 
     @Test
     void get_Transactions_not_found() {
-        ResponseEntity<List<TransactionsBank>> getUser = bankController.getTransactions(99);
-        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThatRuntimeException().isThrownBy(() -> bankController.getTransactions(99));
     }
 
     @Test

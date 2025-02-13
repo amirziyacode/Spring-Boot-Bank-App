@@ -1,6 +1,6 @@
 package org.example.bankapp.controller;
 
-import org.example.bankapp.model.MassageResponse;
+import org.example.bankapp.model.ResponseMassage;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.repo.UserRepository;
@@ -53,7 +53,7 @@ class UserControllerIT {
                 .username("Test")
                 .password("1234")
                 .build();
-        ResponseEntity<MassageResponse> getUser = userController.register(user1);
+        ResponseEntity<ResponseMassage> getUser = userController.register(user1);
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(getUser.getBody()).isNotNull();
         assertThat(getUser.getBody().getMessage()).isEqualTo("Registering Was Successfully !");
@@ -77,15 +77,15 @@ class UserControllerIT {
     @Test
     void login_successfully() {
         User  mockUser = User.builder().username("Amir").password("Java").build();
-        ResponseEntity<MassageResponse> login = userController.login(mockUser);
+        ResponseEntity<ResponseMassage> login = userController.login(mockUser);
         assertThat(login.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     void login_unSuccessfully() {
-        ResponseEntity<MassageResponse> login = userController.login(user);
+        ResponseEntity<ResponseMassage> login = userController.login(user);
         assertThat(login.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-        assertThat(login.getBody()).isEqualTo(new MassageResponse("Invalid username or password!"));
+        assertThat(login.getBody()).isEqualTo(new ResponseMassage("Invalid username or password!"));
 
     }
 
