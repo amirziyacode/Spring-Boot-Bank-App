@@ -4,7 +4,7 @@ package org.example.bankapp.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.bankapp.model.MassageResponse;
+import org.example.bankapp.model.ResponseMassage;
 import org.example.bankapp.model.User;
 import org.example.bankapp.model.UserPassword;
 import org.example.bankapp.service.UserService;
@@ -22,9 +22,9 @@ public class UserController {
 
 
     @PostMapping("register")
-    public ResponseEntity<MassageResponse> register(@RequestBody @Valid User user) {
+    public ResponseEntity<ResponseMassage> register(@RequestBody @Valid User user) {
         userService.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new MassageResponse("Registering Was Successfully !"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMassage("Registering Was Successfully !"));
     }
 
     @PostMapping("forgetPassword/{id}")
@@ -34,12 +34,12 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<MassageResponse> login(@RequestBody @Valid User user) {
+    public ResponseEntity<ResponseMassage> login(@RequestBody @Valid User user) {
        boolean isAuthentication =  userService.loadUser(user.getUsername(), user.getPassword());
        if(isAuthentication) {
-           return ResponseEntity.status(HttpStatus.OK).body(new MassageResponse("Login Was Successfully !"));
+           return ResponseEntity.status(HttpStatus.OK).body(new ResponseMassage("Login Was Successfully !"));
        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MassageResponse("Invalid username or password!"));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseMassage("Invalid username or password!"));
     }
 
     @GetMapping("user")
