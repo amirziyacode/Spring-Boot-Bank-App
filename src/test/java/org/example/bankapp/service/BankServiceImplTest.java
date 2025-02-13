@@ -3,7 +3,6 @@ package org.example.bankapp.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.bankapp.controller.BankController;
 import org.example.bankapp.model.TransactionsBank;
-import org.example.bankapp.repo.TransactionsBankRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,15 +53,6 @@ class BankServiceImplTest {
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
-
-//    @Test
-//    void get_transactions_bank_not_Found()throws Exception {
-//        given(transactionsBankRepo.findByUserId(any(Integer.class))).willReturn(new ArrayList<>());
-//        mockMvc.perform(get("/bank/transactions/{id}",bankServiceImpl.user.getId())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isNotFound());
-//    }
-
     @Test
     void deposit()  throws Exception {
         given(bankService.deposit(any(UUID.class),anyDouble())).willReturn(bankServiceImpl.user);
@@ -97,13 +85,13 @@ class BankServiceImplTest {
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    void get_transactions_bank()throws Exception {
-//        given(transactionsBankRepo.findByUserId(bankServiceImpl.user.getId())).willReturn(List.of(transactionsBank));
-//        mockMvc.perform(get("/bank/transactions/{id}",bankServiceImpl.user.getId())
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    void get_transactions_bank()throws Exception {
+        given(bankService.viewTransactions(bankServiceImpl.user.getId())).willReturn(List.of(transactionsBank));
+        mockMvc.perform(get("/bank/transactions/{id}",bankServiceImpl.user.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void not_found_balance() {
