@@ -18,8 +18,8 @@ public class ErrorControllerHanling {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseMassage> handleAllExceptions(RuntimeException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMassage(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMassage(ex.getMessage()));
     }
 }

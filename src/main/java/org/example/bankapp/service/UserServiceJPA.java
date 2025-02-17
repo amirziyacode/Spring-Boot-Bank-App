@@ -38,7 +38,10 @@ public class UserServiceJPA implements UserService {
         Optional<User> userId = userRepository.findById(id);
         boolean checkPassword = bCryptPasswordEncoder.matches(user.getOldPassword(),userId.get().getPassword());
         if(!checkPassword) {
-            throw  new IllegalArgumentException("Password does not match");
+            throw  new IllegalArgumentException("Password does not match !!");
+        }
+        if(!(user.getNewPassword() .equals(user.getOldPassword()))) {
+            throw  new IllegalArgumentException("You Should Confirm Password !!");
         }
         userId.get().setPassword(bCryptPasswordEncoder.encode(user.getNewPassword()));
         userRepository.save(userId.get());
