@@ -27,9 +27,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMassage("Registering Was Successfully !"));
     }
 
-    @PostMapping("forgetPassword/{id}")
-    public ResponseEntity<UserPassword> forgetPassword(@PathVariable Integer id,@RequestBody @Valid UserPassword user) {
-        userService.forgetPassword(id, user);
+    @PostMapping("forgetPassword/{username}")
+    public ResponseEntity<UserPassword> forgetPassword(@PathVariable String username,@RequestBody @Valid UserPassword user) {
+        userService.forgetPassword(username, user);
         return  ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
     }
 

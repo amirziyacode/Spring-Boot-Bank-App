@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.example.bankapp.model.User;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.UUID;
 
 @Primary
@@ -34,17 +34,18 @@ public class UserServiceJPA implements UserService {
     }
 
     @Override
-    public void forgetPassword(Integer id, UserPassword user) {
-        Optional<User> userId = userRepository.findById(id);
-        boolean checkPassword = bCryptPasswordEncoder.matches(user.getOldPassword(),userId.get().getPassword());
+    public void forgetPassword(String username, UserPassword user) {
+        User getuser = userRepository.findByUsername(username);
+        boolean checkPassword = bCryptPasswordEncoder.matches(user.getOldPassword(),getuser.getPassword());
         if(!checkPassword) {
             throw  new IllegalArgumentException("Password does not match !!");
         }
-        if(!(user.getNewPassword() .equals(user.getOldPassword()))) {
+        if(!Objects.equals(user.getConfirmPassword(), user.getNewPassword())) {
             throw  new IllegalArgumentException("You Should Confirm Password !!");
         }
-        userId.get().setPassword(bCryptPasswordEncoder.encode(user.getNewPassword()));
-        userRepository.save(userId.get());
+
+        getuser.setPassword(bCryptPasswordEncoder.encode(user.getNewPassword()));
+        userRepository.save(getuser);
     }
 
     @Override
