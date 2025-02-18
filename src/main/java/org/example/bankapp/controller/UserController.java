@@ -28,9 +28,9 @@ public class UserController {
     }
 
     @PostMapping("forgetPassword/{username}")
-    public ResponseEntity<UserPassword> forgetPassword(@PathVariable String username,@RequestBody @Valid UserPassword user) {
+    public ResponseEntity<ResponseMassage> forgetPassword(@PathVariable String username,@RequestBody @Valid UserPassword user) {
         userService.forgetPassword(username, user);
-        return  ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
+        return  ResponseEntity.status(HttpStatus.OK).body(new ResponseMassage("Password  Successfully  Changed !"));
     }
 
     @PostMapping("login")

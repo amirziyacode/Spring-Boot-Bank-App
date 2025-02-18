@@ -35,7 +35,10 @@ public class UserServiceJPA implements UserService {
 
     @Override
     public void forgetPassword(String username, UserPassword user) {
-        User getuser = userRepository.findByUsername(username);
+        User getuser = userRepository.findByUsername(username); 
+        if(getuser == null) {
+            throw  new IllegalArgumentException("Username Not Found !!");
+        }
         boolean checkPassword = bCryptPasswordEncoder.matches(user.getOldPassword(),getuser.getPassword());
         if(!checkPassword) {
             throw  new IllegalArgumentException("Password does not match !!");

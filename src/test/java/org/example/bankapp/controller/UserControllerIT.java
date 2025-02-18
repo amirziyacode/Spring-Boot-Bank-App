@@ -64,10 +64,9 @@ class UserControllerIT {
     @Test
     void forgotPassword_user() {
         UserPassword userPassword = UserPassword.builder().oldPassword("1234").newPassword("8899").confirmPassword("8899").build();
-
-        ResponseEntity<UserPassword> getUser = userController.forgetPassword(user.getUsername(),userPassword);
+        ResponseEntity<ResponseMassage> getUser = userController.forgetPassword(user.getUsername(),userPassword);
         assertThat(getUser).isNotNull();
-        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test

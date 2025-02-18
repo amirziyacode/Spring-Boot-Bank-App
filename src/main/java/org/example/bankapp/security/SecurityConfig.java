@@ -1,5 +1,6 @@
 package org.example.bankapp.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,8 @@ import java.util.List;
 
 @EnableWebSecurity
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
-
-    public SecurityConfig(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,11 +37,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(aut -> aut
-                        .requestMatchers("/auth/register","/auth/login","/invalidSession"
+                        .requestMatchers("auth/register","auth/login","/invalidSession"
+                                ,"auth/forgetPassword/**"
                                 ,"/swagger-ui/**", "/v3/api-docs/**",
-                                "/swagger-resources/**").permitAll()
-                        .anyRequest().authenticated()
-                )
+                                "/swagger-resources/**").permitAll().anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
